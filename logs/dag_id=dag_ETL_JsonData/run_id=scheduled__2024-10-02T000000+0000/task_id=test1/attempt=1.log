@@ -1,0 +1,42 @@
+[2024-10-10T04:04:03.829+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-10-10T04:04:03.902+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dag_ETL_JsonData.test1 scheduled__2024-10-02T00:00:00+00:00 [queued]>
+[2024-10-10T04:04:03.969+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dag_ETL_JsonData.test1 scheduled__2024-10-02T00:00:00+00:00 [queued]>
+[2024-10-10T04:04:03.971+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-10-10T04:04:04.019+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): test1> on 2024-10-02 00:00:00+00:00
+[2024-10-10T04:04:04.049+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'dag_ETL_JsonData', 'test1', 'scheduled__2024-10-02T00:00:00+00:00', '--job-id', '955', '--raw', '--subdir', 'DAGS_FOLDER/ETLProject/main.py', '--cfg-path', '/tmp/tmpnrsokidj']
+[2024-10-10T04:04:04.060+0000] {standard_task_runner.py:91} INFO - Job 955: Subtask test1
+[2024-10-10T04:04:04.110+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=6381) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-10-10T04:04:04.112+0000] {standard_task_runner.py:63} INFO - Started process 6401 to run task
+[2024-10-10T04:04:04.279+0000] {task_command.py:426} INFO - Running <TaskInstance: dag_ETL_JsonData.test1 scheduled__2024-10-02T00:00:00+00:00 [running]> on host ecb02e117702
+[2024-10-10T04:04:04.688+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='admin' AIRFLOW_CTX_DAG_ID='dag_ETL_JsonData' AIRFLOW_CTX_TASK_ID='test1' AIRFLOW_CTX_EXECUTION_DATE='2024-10-02T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2024-10-02T00:00:00+00:00'
+[2024-10-10T04:04:04.691+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-10-10T04:04:04.827+0000] {logging_mixin.py:188} INFO - Processing file: og_item_impression.20240830_0840_3.json.gz
+[2024-10-10T04:04:04.833+0000] {logging_mixin.py:188} INFO - Process og_item_impression.20240830_0840_3.json.gz...
+[2024-10-10T04:04:04.835+0000] {logging_mixin.py:188} INFO - Add og_item_impression.20240830_0840_3.json.gz to processed files
+[2024-10-10T04:04:04.837+0000] {logging_mixin.py:188} INFO - Processing file: og_item_impression.20240830_0950_2.json.gz
+[2024-10-10T04:04:04.848+0000] {logging_mixin.py:188} INFO - Process og_item_impression.20240830_0950_2.json.gz...
+[2024-10-10T04:04:04.862+0000] {logging_mixin.py:188} INFO - Add og_item_impression.20240830_0950_2.json.gz to processed files
+[2024-10-10T04:04:04.863+0000] {logging_mixin.py:188} INFO - Processing file: og_item_impression.20240830_1020_3.json.gz
+[2024-10-10T04:04:04.864+0000] {logging_mixin.py:188} INFO - Process og_item_impression.20240830_1020_3.json.gz...
+[2024-10-10T04:04:04.865+0000] {logging_mixin.py:188} INFO - Add og_item_impression.20240830_1020_3.json.gz to processed files
+[2024-10-10T04:04:04.866+0000] {logging_mixin.py:188} INFO - Processing file: og_item_impression.20240830_1100_1.json.gz
+[2024-10-10T04:04:04.867+0000] {logging_mixin.py:188} INFO - Process og_item_impression.20240830_1100_1.json.gz...
+[2024-10-10T04:04:04.868+0000] {logging_mixin.py:188} INFO - Add og_item_impression.20240830_1100_1.json.gz to processed files
+[2024-10-10T04:04:04.878+0000] {logging_mixin.py:188} INFO - Processing file: og_item_impression.20240830_1130_1.json.gz
+[2024-10-10T04:04:04.880+0000] {logging_mixin.py:188} INFO - Process og_item_impression.20240830_1130_1.json.gz...
+[2024-10-10T04:04:04.883+0000] {logging_mixin.py:188} INFO - Add og_item_impression.20240830_1130_1.json.gz to processed files
+[2024-10-10T04:04:04.885+0000] {logging_mixin.py:188} INFO - Processing file: og_item_impression.20240830_1930_0.json.gz
+[2024-10-10T04:04:04.887+0000] {logging_mixin.py:188} INFO - Process og_item_impression.20240830_1930_0.json.gz...
+[2024-10-10T04:04:04.898+0000] {logging_mixin.py:188} INFO - Add og_item_impression.20240830_1930_0.json.gz to processed files
+[2024-10-10T04:04:04.901+0000] {logging_mixin.py:188} INFO - Processing file: og_item_impression.20240830_2010_2.json.gz
+[2024-10-10T04:04:04.903+0000] {logging_mixin.py:188} INFO - Process og_item_impression.20240830_2010_2.json.gz...
+[2024-10-10T04:04:04.915+0000] {logging_mixin.py:188} INFO - Add og_item_impression.20240830_2010_2.json.gz to processed files
+[2024-10-10T04:04:04.919+0000] {logging_mixin.py:188} INFO - Processing file: og_item_impression.20240830_2030_3.json.gz
+[2024-10-10T04:04:04.921+0000] {logging_mixin.py:188} INFO - Process og_item_impression.20240830_2030_3.json.gz...
+[2024-10-10T04:04:04.926+0000] {logging_mixin.py:188} INFO - Add og_item_impression.20240830_2030_3.json.gz to processed files
+[2024-10-10T04:04:04.989+0000] {python.py:237} INFO - Done. Returned value was: None
+[2024-10-10T04:04:04.998+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-10-10T04:04:05.043+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=dag_ETL_JsonData, task_id=test1, run_id=scheduled__2024-10-02T00:00:00+00:00, execution_date=20241002T000000, start_date=20241010T040403, end_date=20241010T040405
+[2024-10-10T04:04:05.159+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-10-10T04:04:05.279+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-10-10T04:04:05.293+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

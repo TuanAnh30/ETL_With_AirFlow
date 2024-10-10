@@ -1,0 +1,37 @@
+[2024-10-07T02:38:48.561+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-10-07T02:38:48.598+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dag_ETL_JsonData.unzip scheduled__2024-10-06T00:00:00+00:00 [queued]>
+[2024-10-07T02:38:48.610+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dag_ETL_JsonData.unzip scheduled__2024-10-06T00:00:00+00:00 [queued]>
+[2024-10-07T02:38:48.611+0000] {taskinstance.py:2306} INFO - Starting attempt 4 of 6
+[2024-10-07T02:38:48.634+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): unzip> on 2024-10-06 00:00:00+00:00
+[2024-10-07T02:38:48.646+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'dag_ETL_JsonData', 'unzip', 'scheduled__2024-10-06T00:00:00+00:00', '--job-id', '516', '--raw', '--subdir', 'DAGS_FOLDER/ETLProject/main.py', '--cfg-path', '/tmp/tmpt2at9wod']
+[2024-10-07T02:38:48.650+0000] {standard_task_runner.py:91} INFO - Job 516: Subtask unzip
+[2024-10-07T02:38:48.650+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=1088) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-10-07T02:38:48.651+0000] {standard_task_runner.py:63} INFO - Started process 1100 to run task
+[2024-10-07T02:38:48.717+0000] {task_command.py:426} INFO - Running <TaskInstance: dag_ETL_JsonData.unzip scheduled__2024-10-06T00:00:00+00:00 [running]> on host ecb02e117702
+[2024-10-07T02:38:48.846+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='admin' AIRFLOW_CTX_DAG_ID='dag_ETL_JsonData' AIRFLOW_CTX_TASK_ID='unzip' AIRFLOW_CTX_EXECUTION_DATE='2024-10-06T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='4' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2024-10-06T00:00:00+00:00'
+[2024-10-07T02:38:48.847+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-10-07T02:38:48.867+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2024-10-07T02:38:48.870+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'gunzip /mnt/og_item_data/og_item_impression.20240830_0840_3.json.gz']
+[2024-10-07T02:38:48.893+0000] {subprocess.py:86} INFO - Output:
+[2024-10-07T02:38:48.900+0000] {subprocess.py:93} INFO - gzip: /mnt/og_item_data/og_item_impression.20240830_0840_3.json.gz: No such file or directory
+[2024-10-07T02:38:48.901+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2024-10-07T02:38:48.903+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-10-07T02:38:48.917+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 243, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2024-10-07T02:38:48.924+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=dag_ETL_JsonData, task_id=unzip, run_id=scheduled__2024-10-06T00:00:00+00:00, execution_date=20241006T000000, start_date=20241007T023848, end_date=20241007T023848
+[2024-10-07T02:38:48.946+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 516 for task unzip (Bash command failed. The command returned a non-zero exit code 1.; 1100)
+[2024-10-07T02:38:48.988+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2024-10-07T02:38:49.010+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-10-07T02:38:49.014+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

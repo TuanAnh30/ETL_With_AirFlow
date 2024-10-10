@@ -1,0 +1,28 @@
+[2024-10-10T04:04:00.601+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-10-10T04:04:00.846+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dag_ETL_JsonData.check_folder scheduled__2024-10-01T00:00:00+00:00 [queued]>
+[2024-10-10T04:04:00.887+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dag_ETL_JsonData.check_folder scheduled__2024-10-01T00:00:00+00:00 [queued]>
+[2024-10-10T04:04:00.888+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-10-10T04:04:01.016+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): check_folder> on 2024-10-01 00:00:00+00:00
+[2024-10-10T04:04:01.052+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'dag_ETL_JsonData', 'check_folder', 'scheduled__2024-10-01T00:00:00+00:00', '--job-id', '936', '--raw', '--subdir', 'DAGS_FOLDER/ETLProject/main.py', '--cfg-path', '/tmp/tmpg9vblo93']
+[2024-10-10T04:04:01.070+0000] {standard_task_runner.py:91} INFO - Job 936: Subtask check_folder
+[2024-10-10T04:04:01.087+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=6308) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-10-10T04:04:01.089+0000] {standard_task_runner.py:63} INFO - Started process 6366 to run task
+[2024-10-10T04:04:01.238+0000] {task_command.py:426} INFO - Running <TaskInstance: dag_ETL_JsonData.check_folder scheduled__2024-10-01T00:00:00+00:00 [running]> on host ecb02e117702
+[2024-10-10T04:04:01.476+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='admin' AIRFLOW_CTX_DAG_ID='dag_ETL_JsonData' AIRFLOW_CTX_TASK_ID='check_folder' AIRFLOW_CTX_EXECUTION_DATE='2024-10-01T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2024-10-01T00:00:00+00:00'
+[2024-10-10T04:04:01.481+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-10-10T04:04:01.579+0000] {logging_mixin.py:188} INFO - Check for files from today: 20241010
+[2024-10-10T04:04:01.584+0000] {logging_mixin.py:188} INFO - File to process: dags/ETLProject/og_item_impression.20240830_/og_item_impression.20240830_0840_3.json.gz
+[2024-10-10T04:04:01.585+0000] {logging_mixin.py:188} INFO - File to process: dags/ETLProject/og_item_impression.20240830_/og_item_impression.20240830_0950_2.json.gz
+[2024-10-10T04:04:01.586+0000] {logging_mixin.py:188} INFO - File to process: dags/ETLProject/og_item_impression.20240830_/og_item_impression.20240830_1020_3.json.gz
+[2024-10-10T04:04:01.587+0000] {logging_mixin.py:188} INFO - File to process: dags/ETLProject/og_item_impression.20240830_/og_item_impression.20240830_1100_1.json.gz
+[2024-10-10T04:04:01.588+0000] {logging_mixin.py:188} INFO - File to process: dags/ETLProject/og_item_impression.20240830_/og_item_impression.20240830_1130_1.json.gz
+[2024-10-10T04:04:01.588+0000] {logging_mixin.py:188} INFO - File to process: dags/ETLProject/og_item_impression.20240830_/og_item_impression.20240830_1930_0.json.gz
+[2024-10-10T04:04:01.590+0000] {logging_mixin.py:188} INFO - File to process: dags/ETLProject/og_item_impression.20240830_/og_item_impression.20240830_2010_2.json.gz
+[2024-10-10T04:04:01.591+0000] {logging_mixin.py:188} INFO - File to process: dags/ETLProject/og_item_impression.20240830_/og_item_impression.20240830_2030_3.json.gz
+[2024-10-10T04:04:01.696+0000] {logging_mixin.py:188} INFO - File in folder '20240830': ['og_item_impression.20240830_0840_3.json.gz', 'og_item_impression.20240830_0950_2.json.gz', 'og_item_impression.20240830_1020_3.json.gz', 'og_item_impression.20240830_1100_1.json.gz', 'og_item_impression.20240830_1130_1.json.gz', 'og_item_impression.20240830_1930_0.json.gz', 'og_item_impression.20240830_2010_2.json.gz', 'og_item_impression.20240830_2030_3.json.gz']
+[2024-10-10T04:04:01.698+0000] {python.py:237} INFO - Done. Returned value was: None
+[2024-10-10T04:04:01.701+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-10-10T04:04:01.720+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=dag_ETL_JsonData, task_id=check_folder, run_id=scheduled__2024-10-01T00:00:00+00:00, execution_date=20241001T000000, start_date=20241010T040400, end_date=20241010T040401
+[2024-10-10T04:04:01.794+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-10-10T04:04:01.870+0000] {taskinstance.py:3498} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2024-10-10T04:04:01.880+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

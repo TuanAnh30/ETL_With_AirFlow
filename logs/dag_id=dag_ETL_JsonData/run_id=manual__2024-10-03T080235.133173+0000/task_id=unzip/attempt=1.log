@@ -1,0 +1,19 @@
+[2024-10-03T08:02:36.313+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-10-03T08:02:36.364+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dag_ETL_JsonData.unzip manual__2024-10-03T08:02:35.133173+00:00 [queued]>
+[2024-10-03T08:02:36.377+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dag_ETL_JsonData.unzip manual__2024-10-03T08:02:35.133173+00:00 [queued]>
+[2024-10-03T08:02:36.378+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-10-03T08:02:36.405+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): unzip> on 2024-10-03 08:02:35.133173+00:00
+[2024-10-03T08:02:36.415+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'dag_ETL_JsonData', 'unzip', 'manual__2024-10-03T08:02:35.133173+00:00', '--job-id', '32', '--raw', '--subdir', 'DAGS_FOLDER/ETLProject/main.py', '--cfg-path', '/tmp/tmps1nbg7if']
+[2024-10-03T08:02:36.419+0000] {standard_task_runner.py:91} INFO - Job 32: Subtask unzip
+[2024-10-03T08:02:36.421+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=812) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-10-03T08:02:36.423+0000] {standard_task_runner.py:63} INFO - Started process 821 to run task
+[2024-10-03T08:02:36.491+0000] {task_command.py:426} INFO - Running <TaskInstance: dag_ETL_JsonData.unzip manual__2024-10-03T08:02:35.133173+00:00 [running]> on host fb5d174c2391
+[2024-10-03T08:02:36.627+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='admin' AIRFLOW_CTX_DAG_ID='dag_ETL_JsonData' AIRFLOW_CTX_TASK_ID='unzip' AIRFLOW_CTX_EXECUTION_DATE='2024-10-03T08:02:35.133173+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-10-03T08:02:35.133173+00:00'
+[2024-10-03T08:02:36.629+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-10-03T08:02:36.659+0000] {logging_mixin.py:188} INFO - Lỗi khi giải nén file:[Errno 2] No such file or directory: 'C:/Users/adunh/Downloads/og_item_impression.20240830_/og_item_impression.20240830_1100_1.json.gz'
+[2024-10-03T08:02:36.660+0000] {python.py:237} INFO - Done. Returned value was: None
+[2024-10-03T08:02:36.662+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-10-03T08:02:36.677+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=dag_ETL_JsonData, task_id=unzip, run_id=manual__2024-10-03T08:02:35.133173+00:00, execution_date=20241003T080235, start_date=20241003T080236, end_date=20241003T080236
+[2024-10-03T08:02:36.760+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-10-03T08:02:36.791+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-10-03T08:02:36.796+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
