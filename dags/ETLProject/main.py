@@ -12,7 +12,6 @@ from airflow.operators.bash import BashOperator
 from pathlib import Path
 from airflow.providers.postgres.hooks.postgres import PostgresHook # type: ignore
 import os
-import re
 
 #Check folder
 def check(**kwargs):
@@ -43,9 +42,9 @@ def process_gzip(**kwargs):
         print(f'Lỗi khi giải nén file:{e}')
 
 # Process File Json    
-def transfrom_data(ti):
+def transfrom_data(**kwargs):
     try:
-        json_item = ti.xcom_pull(task_ids='Extract_Gzip_To_Json', key='json_item')
+        json_item = kwargs['ti'].xcom_pull(task_ids='Extract_Gzip_To_Json', key='json_item')
         if not json_item: 
             print("Không tìm thấy dữ liệu")
             return
@@ -87,11 +86,25 @@ def transfrom_data(ti):
         df = process_df(convert_to_df(data))
         print(df)
         df = df.to_dicts()
-        ti.xcom_push(key='df_processed', value=df)
+        kwargs['ti'].xcom_push(key='df_processed', value=df)
     except Exception as e:
         print(f"Lỗi: {e}")
         return []
 
+def process_multifile(**kwargs):
+    df = kwargs['ti'].xcom_pull(task_ids='Transfrom_Data_To_DataFrame', key='df_processed')
+    list_df=[]
+    if df is not None:
+        list_df.append(df)
+    if list_df:
+        result_df = pl.concat(list_df)
+        final_df = result_df.group_by(['date', 'track_id', 'page_id', 'search_term', 'block_id', 'region', 'platform']).agg([
+            pl.col('max_position').max(),
+            pl.sum('count_event'),
+        ])
+        kwargs['ti'].xcom_push(key='df_processed', value=final_df)
+    else:
+        kwargs['ti'].xcom_push(key='df_processed', value=None)
 #Convert File To DataFrame
 def convert_to_df(data_json):
     try:
