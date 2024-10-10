@@ -1,0 +1,21 @@
+[2024-10-10T04:04:07.552+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-10-10T04:04:07.637+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dag_ETL_JsonData.Create_Table scheduled__2024-10-05T00:00:00+00:00 [queued]>
+[2024-10-10T04:04:07.656+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dag_ETL_JsonData.Create_Table scheduled__2024-10-05T00:00:00+00:00 [queued]>
+[2024-10-10T04:04:07.657+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-10-10T04:04:07.713+0000] {taskinstance.py:2330} INFO - Executing <Task(PostgresOperator): Create_Table> on 2024-10-05 00:00:00+00:00
+[2024-10-10T04:04:07.743+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=6416) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-10-10T04:04:07.742+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'dag_ETL_JsonData', 'Create_Table', 'scheduled__2024-10-05T00:00:00+00:00', '--job-id', '967', '--raw', '--subdir', 'DAGS_FOLDER/ETLProject/main.py', '--cfg-path', '/tmp/tmpcmaumq6s']
+[2024-10-10T04:04:07.760+0000] {standard_task_runner.py:63} INFO - Started process 6439 to run task
+[2024-10-10T04:04:07.764+0000] {standard_task_runner.py:91} INFO - Job 967: Subtask Create_Table
+[2024-10-10T04:04:08.023+0000] {task_command.py:426} INFO - Running <TaskInstance: dag_ETL_JsonData.Create_Table scheduled__2024-10-05T00:00:00+00:00 [running]> on host ecb02e117702
+[2024-10-10T04:04:08.341+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='admin' AIRFLOW_CTX_DAG_ID='dag_ETL_JsonData' AIRFLOW_CTX_TASK_ID='Create_Table' AIRFLOW_CTX_EXECUTION_DATE='2024-10-05T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2024-10-05T00:00:00+00:00'
+[2024-10-10T04:04:08.343+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-10-10T04:04:08.370+0000] {sql.py:276} INFO - Executing: CREATE TABLE IF NOT EXISTS test1 (date TIMESTAMP WITH TIME ZONE, track_id VARCHAR, page_id VARCHAR, block_id VARCHAR, search_term VARCHAR, position VARCHAR, region INTEGER, platform VARCHAR, max_position INTEGER, count_event INTEGER)
+[2024-10-10T04:04:08.409+0000] {base.py:84} INFO - Using connection ID 'postgres_localhost' for task execution.
+[2024-10-10T04:04:08.457+0000] {base.py:84} INFO - Using connection ID 'postgres_localhost' for task execution.
+[2024-10-10T04:04:08.712+0000] {sql.py:470} INFO - Running statement: CREATE TABLE IF NOT EXISTS test1 (date TIMESTAMP WITH TIME ZONE, track_id VARCHAR, page_id VARCHAR, block_id VARCHAR, search_term VARCHAR, position VARCHAR, region INTEGER, platform VARCHAR, max_position INTEGER, count_event INTEGER), parameters: None
+[2024-10-10T04:04:08.719+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-10-10T04:04:08.742+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=dag_ETL_JsonData, task_id=Create_Table, run_id=scheduled__2024-10-05T00:00:00+00:00, execution_date=20241005T000000, start_date=20241010T040407, end_date=20241010T040408
+[2024-10-10T04:04:08.824+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-10-10T04:04:08.874+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-10-10T04:04:08.887+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

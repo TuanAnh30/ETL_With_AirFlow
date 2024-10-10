@@ -1,0 +1,20 @@
+[2024-10-10T02:47:11.203+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-10-10T02:47:11.244+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dag_ETL_JsonData.check_folder manual__2024-10-10T02:47:10.134325+00:00 [queued]>
+[2024-10-10T02:47:11.256+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dag_ETL_JsonData.check_folder manual__2024-10-10T02:47:10.134325+00:00 [queued]>
+[2024-10-10T02:47:11.257+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-10-10T02:47:11.277+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): check_folder> on 2024-10-10 02:47:10.134325+00:00
+[2024-10-10T02:47:11.288+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'dag_ETL_JsonData', 'check_folder', 'manual__2024-10-10T02:47:10.134325+00:00', '--job-id', '914', '--raw', '--subdir', 'DAGS_FOLDER/ETLProject/main.py', '--cfg-path', '/tmp/tmpi8n27qou']
+[2024-10-10T02:47:11.292+0000] {standard_task_runner.py:91} INFO - Job 914: Subtask check_folder
+[2024-10-10T02:47:11.314+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=2160) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-10-10T02:47:11.315+0000] {standard_task_runner.py:63} INFO - Started process 2170 to run task
+[2024-10-10T02:47:11.364+0000] {task_command.py:426} INFO - Running <TaskInstance: dag_ETL_JsonData.check_folder manual__2024-10-10T02:47:10.134325+00:00 [running]> on host ecb02e117702
+[2024-10-10T02:47:11.482+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='admin' AIRFLOW_CTX_DAG_ID='dag_ETL_JsonData' AIRFLOW_CTX_TASK_ID='check_folder' AIRFLOW_CTX_EXECUTION_DATE='2024-10-10T02:47:10.134325+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-10-10T02:47:10.134325+00:00'
+[2024-10-10T02:47:11.484+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-10-10T02:47:11.504+0000] {logging_mixin.py:188} INFO - Check for files from today: 20241010
+[2024-10-10T02:47:11.530+0000] {logging_mixin.py:188} INFO - File in folder '20240830': ['og_item_impression.20240830_0840_3.json.gz', 'og_item_impression.20240830_0950_2.json.gz', 'og_item_impression.20240830_1020_3.json.gz', 'og_item_impression.20240830_1100_1.json.gz', 'og_item_impression.20240830_1130_1.json.gz', 'og_item_impression.20240830_1930_0.json.gz', 'og_item_impression.20240830_2010_2.json.gz', 'og_item_impression.20240830_2030_3.json.gz']
+[2024-10-10T02:47:11.531+0000] {python.py:237} INFO - Done. Returned value was: None
+[2024-10-10T02:47:11.532+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-10-10T02:47:11.544+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=dag_ETL_JsonData, task_id=check_folder, run_id=manual__2024-10-10T02:47:10.134325+00:00, execution_date=20241010T024710, start_date=20241010T024711, end_date=20241010T024711
+[2024-10-10T02:47:11.571+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-10-10T02:47:11.590+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-10-10T02:47:11.593+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

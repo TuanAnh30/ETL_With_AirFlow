@@ -1,0 +1,72 @@
+[2024-10-09T09:13:14.877+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-10-09T09:13:14.916+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dag_ETL_JsonData.Create_Insert_Query manual__2024-10-09T08:59:29.846386+00:00 [queued]>
+[2024-10-09T09:13:14.929+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dag_ETL_JsonData.Create_Insert_Query manual__2024-10-09T08:59:29.846386+00:00 [queued]>
+[2024-10-09T09:13:14.930+0000] {taskinstance.py:2306} INFO - Starting attempt 3 of 8
+[2024-10-09T09:13:14.948+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): Create_Insert_Query> on 2024-10-09 08:59:29.846386+00:00
+[2024-10-09T09:13:14.959+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'dag_ETL_JsonData', 'Create_Insert_Query', 'manual__2024-10-09T08:59:29.846386+00:00', '--job-id', '761', '--raw', '--subdir', 'DAGS_FOLDER/ETLProject/main.py', '--cfg-path', '/tmp/tmp3wmoh58n']
+[2024-10-09T09:13:14.963+0000] {standard_task_runner.py:91} INFO - Job 761: Subtask Create_Insert_Query
+[2024-10-09T09:13:14.965+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=16947) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-10-09T09:13:14.966+0000] {standard_task_runner.py:63} INFO - Started process 16949 to run task
+[2024-10-09T09:13:15.025+0000] {task_command.py:426} INFO - Running <TaskInstance: dag_ETL_JsonData.Create_Insert_Query manual__2024-10-09T08:59:29.846386+00:00 [running]> on host ecb02e117702
+[2024-10-09T09:13:15.137+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='admin' AIRFLOW_CTX_DAG_ID='dag_ETL_JsonData' AIRFLOW_CTX_TASK_ID='Create_Insert_Query' AIRFLOW_CTX_EXECUTION_DATE='2024-10-09T08:59:29.846386+00:00' AIRFLOW_CTX_TRY_NUMBER='3' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-10-09T08:59:29.846386+00:00'
+[2024-10-09T09:13:15.139+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-10-09T09:13:15.196+0000] {logging_mixin.py:188} INFO - Số lượng bản ghi: 2878
+[2024-10-09T09:13:15.197+0000] {logging_mixin.py:188} INFO - shape: (2_878, 9)
+┌────────────┬────────────┬────────────┬───────────┬───┬────────┬──────────┬───────────┬───────────┐
+│ date       ┆ track_id   ┆ page_id    ┆ search_te ┆ … ┆ region ┆ platform ┆ max_posit ┆ count_eve │
+│ ---        ┆ ---        ┆ ---        ┆ rm        ┆   ┆ ---    ┆ ---      ┆ ion       ┆ nt        │
+│ str        ┆ str        ┆ str        ┆ ---       ┆   ┆ str    ┆ str      ┆ ---       ┆ ---       │
+│            ┆            ┆            ┆ str       ┆   ┆        ┆          ┆ str       ┆ i64       │
+╞════════════╪════════════╪════════════╪═══════════╪═══╪════════╪══════════╪═══════════╪═══════════╡
+│ 2024-08-30 ┆ a95536b56f ┆ og_home    ┆           ┆ … ┆ 1      ┆ zma      ┆ 81        ┆ 188       │
+│ T00:00:00+ ┆ cf8b135aab ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ d5334c846c ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ 2ab9b3094d ┆ og_home    ┆           ┆ … ┆ 1      ┆ zma      ┆ 87        ┆ 91        │
+│ T00:00:00+ ┆ f36e18ec03 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 326dae4fbe ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ 2fd6b195-a ┆            ┆           ┆ … ┆ 2      ┆ android  ┆ 49        ┆ 3         │
+│ T00:00:00+ ┆ b6b-409b-b ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ c99-7ab7ac ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ b1853546-1 ┆ og_listing ┆           ┆ … ┆ 1      ┆ android  ┆ 68        ┆ 22        │
+│ T00:00:00+ ┆ 267-42f8-b ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 04f-901dbc ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ d831af13-4 ┆ og_search  ┆ Xúc xích  ┆ … ┆ 2      ┆ android  ┆ 9         ┆ 66        │
+│ T00:00:00+ ┆ 008-4ee9-8 ┆            ┆ vealz     ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ d42-f0f981 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ …          ┆ …          ┆ …          ┆ …         ┆ … ┆ …      ┆ …        ┆ …         ┆ …         │
+│ 2024-08-30 ┆ 5CAA3D96-1 ┆ og_home    ┆           ┆ … ┆ 1      ┆ ios      ┆ 2         ┆ 6         │
+│ T00:00:00+ ┆ 2FD-47AB-8 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 584-5978F0 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ D3DFA23F-C ┆ og_search  ┆           ┆ … ┆ 2      ┆ ios      ┆ 4         ┆ 5         │
+│ T00:00:00+ ┆ 0E4-4142-8 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ BD1-F9F3CD ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ B60BF844-F ┆            ┆           ┆ … ┆ 1      ┆ ios      ┆ 9         ┆ 26        │
+│ T00:00:00+ ┆ 3CF-4476-8 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ B66-A56F7A ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ A34642F1-2 ┆ og_home    ┆           ┆ … ┆ 1      ┆ ios      ┆ 0         ┆ 2         │
+│ T00:00:00+ ┆ 629-435C-B ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 502-27A8DB ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ C8E74A2E-3 ┆ og_search  ┆ xúc xích  ┆ … ┆ 2      ┆ ios      ┆ 9         ┆ 21        │
+│ T00:00:00+ ┆ 3EF-4D3F-8 ┆            ┆ phô mai   ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ AD0-E88CDD ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+└────────────┴────────────┴────────────┴───────────┴───┴────────┴──────────┴───────────┴───────────┘
+[2024-10-09T09:13:15.198+0000] {logging_mixin.py:188} INFO - Insert các cột:  ['date', 'track_id', 'page_id', 'search_term', 'block_id', 'region', 'platform', 'max_position', 'count_event']
+[2024-10-09T09:13:15.199+0000] {logging_mixin.py:188} INFO - Table:  test1
+[2024-10-09T09:13:15.219+0000] {base.py:84} INFO - Using connection ID 'postgres_localhost' for task execution.
+[2024-10-09T09:13:18.593+0000] {logging_mixin.py:188} INFO - Đã insert dữ liệu thành công
+[2024-10-09T09:13:18.595+0000] {python.py:237} INFO - Done. Returned value was: None
+[2024-10-09T09:13:18.595+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-10-09T09:13:18.607+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=dag_ETL_JsonData, task_id=Create_Insert_Query, run_id=manual__2024-10-09T08:59:29.846386+00:00, execution_date=20241009T085929, start_date=20241009T091314, end_date=20241009T091318
+[2024-10-09T09:13:18.636+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-10-09T09:13:18.654+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-10-09T09:13:18.657+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

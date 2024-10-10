@@ -1,0 +1,67 @@
+[2024-10-09T08:18:22.106+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-10-09T08:18:22.142+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dag_ETL_JsonData.Transfrom_Data_To_DataFrame manual__2024-10-09T08:18:16.049947+00:00 [queued]>
+[2024-10-09T08:18:22.153+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dag_ETL_JsonData.Transfrom_Data_To_DataFrame manual__2024-10-09T08:18:16.049947+00:00 [queued]>
+[2024-10-09T08:18:22.153+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-10-09T08:18:22.171+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): Transfrom_Data_To_DataFrame> on 2024-10-09 08:18:16.049947+00:00
+[2024-10-09T08:18:22.181+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=13889) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-10-09T08:18:22.180+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'dag_ETL_JsonData', 'Transfrom_Data_To_DataFrame', 'manual__2024-10-09T08:18:16.049947+00:00', '--job-id', '739', '--raw', '--subdir', 'DAGS_FOLDER/ETLProject/main.py', '--cfg-path', '/tmp/tmp_jrnn6l1']
+[2024-10-09T08:18:22.182+0000] {standard_task_runner.py:63} INFO - Started process 13891 to run task
+[2024-10-09T08:18:22.183+0000] {standard_task_runner.py:91} INFO - Job 739: Subtask Transfrom_Data_To_DataFrame
+[2024-10-09T08:18:22.236+0000] {task_command.py:426} INFO - Running <TaskInstance: dag_ETL_JsonData.Transfrom_Data_To_DataFrame manual__2024-10-09T08:18:16.049947+00:00 [running]> on host ecb02e117702
+[2024-10-09T08:18:22.334+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='admin' AIRFLOW_CTX_DAG_ID='dag_ETL_JsonData' AIRFLOW_CTX_TASK_ID='Transfrom_Data_To_DataFrame' AIRFLOW_CTX_EXECUTION_DATE='2024-10-09T08:18:16.049947+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-10-09T08:18:16.049947+00:00'
+[2024-10-09T08:18:22.335+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-10-09T08:18:25.946+0000] {logging_mixin.py:188} INFO - shape: (2_878, 9)
+┌────────────┬────────────┬────────────┬───────────┬───┬────────┬──────────┬───────────┬───────────┐
+│ date       ┆ track_id   ┆ page_id    ┆ search_te ┆ … ┆ region ┆ platform ┆ max_posit ┆ count_eve │
+│ ---        ┆ ---        ┆ ---        ┆ rm        ┆   ┆ ---    ┆ ---      ┆ ion       ┆ nt        │
+│ str        ┆ str        ┆ str        ┆ ---       ┆   ┆ str    ┆ str      ┆ ---       ┆ ---       │
+│            ┆            ┆            ┆ str       ┆   ┆        ┆          ┆ str       ┆ u32       │
+╞════════════╪════════════╪════════════╪═══════════╪═══╪════════╪══════════╪═══════════╪═══════════╡
+│ 2024-08-30 ┆ 0896d089ce ┆ og_new_use ┆           ┆ … ┆ 1      ┆ zma      ┆ 9         ┆ 17        │
+│ T00:00:00+ ┆ 884e669728 ┆ r_offer    ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 584af7638c ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ 655A191A-3 ┆ og_flashsa ┆           ┆ … ┆ 1      ┆ ios      ┆ 7         ┆ 9         │
+│ T00:00:00+ ┆ 36D-42AB-8 ┆ le         ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 3F3-DBB314 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ A348CCD8-C ┆ og_home    ┆           ┆ … ┆ 1      ┆ ios      ┆ 8         ┆ 13        │
+│ T00:00:00+ ┆ 260-4344-8 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 265-5200BB ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ E422454C-7 ┆ og_home    ┆           ┆ … ┆ 1      ┆ ios      ┆ 8         ┆ 14        │
+│ T00:00:00+ ┆ 539-4722-A ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ E63-B547A2 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ 04abe697-e ┆ og_listing ┆           ┆ … ┆ 1      ┆ android  ┆ 8         ┆ 5         │
+│ T00:00:00+ ┆ 8d5-4b7b-9 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ fb2-cb9b55 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ …          ┆ …          ┆ …          ┆ …         ┆ … ┆ …      ┆ …        ┆ …         ┆ …         │
+│ 2024-08-30 ┆ 41AD4FD2-C ┆ og_home    ┆           ┆ … ┆ 1      ┆ ios      ┆ 3         ┆ 6         │
+│ T00:00:00+ ┆ AFC-40D2-8 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ A4B-808AA1 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ 3ACE7E62-A ┆ og_home    ┆           ┆ … ┆ 2      ┆ ios      ┆ 2         ┆ 3         │
+│ T00:00:00+ ┆ 63C-4C2C-8 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 115-DB9F94 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ E535BFDD-9 ┆ og_home    ┆           ┆ … ┆ 2      ┆ ios      ┆ 2         ┆ 3         │
+│ T00:00:00+ ┆ F96-4094-9 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ FAB-161AAA ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ 79C1772B-3 ┆ og_search  ┆ Mì gumi   ┆ … ┆ 2      ┆ ios      ┆ 9         ┆ 26        │
+│ T00:00:00+ ┆ 094-4393-A ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 593-9E0E02 ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 2024-08-30 ┆ 5D589FC2-0 ┆ og_flashsa ┆           ┆ … ┆ 1      ┆ ios      ┆ 34        ┆ 12        │
+│ T00:00:00+ ┆ 22C-4FBA-9 ┆ le         ┆           ┆   ┆        ┆          ┆           ┆           │
+│ 07:00      ┆ 4B3-5B20BD ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+│            ┆ …          ┆            ┆           ┆   ┆        ┆          ┆           ┆           │
+└────────────┴────────────┴────────────┴───────────┴───┴────────┴──────────┴───────────┴───────────┘
+[2024-10-09T08:18:26.102+0000] {python.py:237} INFO - Done. Returned value was: None
+[2024-10-09T08:18:26.103+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-10-09T08:18:26.114+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=dag_ETL_JsonData, task_id=Transfrom_Data_To_DataFrame, run_id=manual__2024-10-09T08:18:16.049947+00:00, execution_date=20241009T081816, start_date=20241009T081822, end_date=20241009T081826
+[2024-10-09T08:18:26.177+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-10-09T08:18:26.202+0000] {taskinstance.py:3498} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2024-10-09T08:18:26.206+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
