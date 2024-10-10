@@ -14,12 +14,31 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook # type: ignor
 import os
 import re
 
+#Check folder
+def check(**kwargs):
+    processed_file = load_list()
+    for filename in os.listdir(folder):
+        if filename.endswith('.json.gz'):
+            filepath = os.path.join(folder, filename)
+            if filepath not in processed_file:
+                print(f'File mới cần xử lý: {filepath}')
+                kwargs['ti'].xcom_push(key='file_to_process', value=filepath)
+                return
+    print('Không có file cần xử lý')
+    kwargs['ti'].xcom_push(key='file_to_process', value=None)
+
 # Unzip Def
-def process_gzip(ti, file):
+def process_gzip(**kwargs):
     try:
+        file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
+        if file:
+            print(f'Process: {file}')
+            update_list_file(file)
+        else:
+            print('Ko có file')        
         with gzip.open(file, 'rb') as f:
             json_item = list(ijson.items(f, '', multiple_values=True))
-        ti.xcom_push(key='json_item',value=json_item)
+        kwargs['ti'].xcom_push(key='json_item',value=json_item)
     except Exception as e:
         print(f'Lỗi khi giải nén file:{e}')
 
@@ -178,31 +197,10 @@ def load_list():
             return set(line.strip() for line in f)
     return set()
 
-def test_process(**kwargs):
-    file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='check')
-    if file:
-        print(f'Process: {file}')
-        update_list_file(file)
-    else:
-        print('Ko có file')
-
 #Update list processed file
 def update_list_file(file):
     with open(processed_file_list, 'a') as f: 
         f.write(f'{file}\n')
-
-#Check folder
-def check(**kwargs):
-    processed_file = load_list()
-    for filename in os.listdir(folder):
-        if filename.endswith('.json.gz'):
-            filepath = os.path.join(folder, filename)
-            if filepath not in processed_file:
-                print(f'File mới cần xử lý: {filepath}')
-                kwargs['ti'].xcom_push(key='file_to_process', value=filepath)
-                return
-    print('Không có file cần xử lý')
-    kwargs['ti'].xcom_push(key='file_to_process', value=None)
 
 gzip_path = "dags/og_item_impression.20240830_2030_3.json.gz"
 folder = "dags/ETLProject/og_item_impression.20240830_"
@@ -251,3 +249,4 @@ Load_Data_Step = PythonOperator(
     dag=dag
 )
 # unzip_gzipfile >> process_data >> load_data
+Check_folder >> Extract_File_Step
