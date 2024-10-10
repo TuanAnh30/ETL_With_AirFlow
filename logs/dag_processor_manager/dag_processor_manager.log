@@ -30500,3 +30500,41 @@ File Path                                        PID    Runtime      # DAGs    #
 /opt/airflow/dags/dag_with_py_dependencies.py                             1           0  0.15s           2024-10-09T10:31:06
 /opt/airflow/dags/ETLProject/python_to_sql.py                             0           0  0.07s           2024-10-09T10:31:07
 ================================================================================
+[2024-10-10T07:18:37.714+0000] {manager.py:470} INFO - Processing files using up to 2 processes at a time 
+[2024-10-10T07:18:37.715+0000] {manager.py:471} INFO - Process each file at most once every 30 seconds
+[2024-10-10T07:18:37.718+0000] {manager.py:472} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2024-10-10T07:18:37.722+0000] {manager.py:737} INFO - Searching for files in /opt/airflow/dags
+[2024-10-10T07:18:38.571+0000] {manager.py:740} INFO - There are 4 files in /opt/airflow/dags
+[2024-10-10T07:18:38.804+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-----------------------------------------------  -----  ---------  --------  ----------  --------------  ----------
+/opt/airflow/dags/dag_with_postgres_operator.py    193  0.09s             0           0
+/opt/airflow/dags/dag_with_py_dependencies.py      196  0.06s             0           0
+/opt/airflow/dags/ETLProject/main.py                                      0           0
+/opt/airflow/dags/ETLProject/python_to_sql.py                             0           0
+================================================================================
+[2024-10-10T07:19:08.978+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                        PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-----------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/ETLProject/main.py                                      1           0  0.90s           2024-10-10T07:18:40
+/opt/airflow/dags/dag_with_postgres_operator.py                           1           0  0.57s           2024-10-10T07:18:39
+/opt/airflow/dags/dag_with_py_dependencies.py                             1           0  0.56s           2024-10-10T07:18:39
+/opt/airflow/dags/ETLProject/python_to_sql.py                             0           0  0.13s           2024-10-10T07:18:39
+================================================================================
+[2024-10-10T07:19:39.061+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                        PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-----------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/ETLProject/main.py                                      1           0  1.21s           2024-10-10T07:19:12
+/opt/airflow/dags/dag_with_postgres_operator.py                           1           0  0.97s           2024-10-10T07:19:11
+/opt/airflow/dags/dag_with_py_dependencies.py                             1           0  0.81s           2024-10-10T07:19:11
+/opt/airflow/dags/ETLProject/python_to_sql.py                             0           0  0.22s           2024-10-10T07:19:11
+================================================================================

@@ -2207,3 +2207,24 @@ ModuleNotFoundError: No module named 'process_vietnamese'
 [2024-10-10T04:46:59.856+0000] {logging_mixin.py:188} INFO - [2024-10-10T04:46:59.856+0000] {dag.py:3096} INFO - Sync 1 DAGs
 [2024-10-10T04:46:59.881+0000] {logging_mixin.py:188} INFO - [2024-10-10T04:46:59.881+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-10 00:00:00+00:00, run_after=2024-10-11 00:00:00+00:00
 [2024-10-10T04:46:59.909+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.217 seconds
+[2024-10-10T07:18:39.502+0000] {processor.py:161} INFO - Started process (PID=208) to work on /opt/airflow/dags/ETLProject/main.py
+[2024-10-10T07:18:39.503+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/main.py for tasks to queue
+[2024-10-10T07:18:39.506+0000] {logging_mixin.py:188} INFO - [2024-10-10T07:18:39.505+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/main.py
+[2024-10-10T07:18:39.978+0000] {processor.py:840} INFO - DAG(s) 'dag_ETL_JsonData' retrieved from /opt/airflow/dags/ETLProject/main.py
+[2024-10-10T07:18:40.256+0000] {logging_mixin.py:188} INFO - [2024-10-10T07:18:40.256+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-10-10T07:18:40.288+0000] {logging_mixin.py:188} INFO - [2024-10-10T07:18:40.287+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-10 00:00:00+00:00, run_after=2024-10-11 00:00:00+00:00
+[2024-10-10T07:18:40.340+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.847 seconds
+[2024-10-10T07:19:11.432+0000] {processor.py:161} INFO - Started process (PID=241) to work on /opt/airflow/dags/ETLProject/main.py
+[2024-10-10T07:19:11.434+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/main.py for tasks to queue
+[2024-10-10T07:19:11.443+0000] {logging_mixin.py:188} INFO - [2024-10-10T07:19:11.443+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/main.py
+[2024-10-10T07:19:12.107+0000] {processor.py:840} INFO - DAG(s) 'dag_ETL_JsonData' retrieved from /opt/airflow/dags/ETLProject/main.py
+[2024-10-10T07:19:12.293+0000] {logging_mixin.py:188} INFO - [2024-10-10T07:19:12.292+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-10-10T07:19:12.375+0000] {logging_mixin.py:188} INFO - [2024-10-10T07:19:12.375+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-10 00:00:00+00:00, run_after=2024-10-11 00:00:00+00:00
+[2024-10-10T07:19:12.502+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 1.091 seconds
+[2024-10-10T07:19:42.651+0000] {processor.py:161} INFO - Started process (PID=268) to work on /opt/airflow/dags/ETLProject/main.py
+[2024-10-10T07:19:42.653+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/main.py for tasks to queue
+[2024-10-10T07:19:42.655+0000] {logging_mixin.py:188} INFO - [2024-10-10T07:19:42.655+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/main.py
+[2024-10-10T07:19:42.830+0000] {processor.py:840} INFO - DAG(s) 'dag_ETL_JsonData' retrieved from /opt/airflow/dags/ETLProject/main.py
+[2024-10-10T07:19:42.867+0000] {logging_mixin.py:188} INFO - [2024-10-10T07:19:42.867+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-10-10T07:19:42.897+0000] {logging_mixin.py:188} INFO - [2024-10-10T07:19:42.896+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-10 00:00:00+00:00, run_after=2024-10-11 00:00:00+00:00
+[2024-10-10T07:19:42.937+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.292 seconds
