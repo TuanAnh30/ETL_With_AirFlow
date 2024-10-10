@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 import gzip
 import polars as pl
 import ijson
-import json
 import sys
 sys.path.append('/opt/airflow/dags/ETLProject')
 import process_vietnamese
@@ -10,8 +9,6 @@ from airflow import DAG
 from airflow.providers.postgres.operators.postgres import PostgresOperator # type: ignore
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
-from psycopg2 import sql
-from airflow.models import Variable
 from pathlib import Path
 from airflow.providers.postgres.hooks.postgres import PostgresHook # type: ignore
 import os
@@ -174,37 +171,42 @@ def create_table():
     except Exception as e:
         print("Lỗi: ",e)
 
-PROCESSED_FILES = []
-def check_folder_new(folder_path, **kwargs):
-    today = datetime.now().strftime('%Y%m%d')
-    print(f'Check for files from today: {today}')
-    day='20240830'
-    file_pattern = r'og_item_impression\.(\d{8})_\d{4}_\d\.json\.gz'
-    files = os.listdir(folder_path)
-    unprocessed_files = []
-    for file_name in files:
-        match = re.match(file_pattern, file_name)
-        if match and file_name not in PROCESSED_FILES:
-            file_date = match.group(1)
-            if file_date == day:
-                file_path = os.path.join(folder_path, file_name)
-                unprocessed_files.append(file_path)
-                print(f'File to process: {file_path}')
-            else:
-                print(f'File {file_name} is not {day}. Skip ...')
-        else:
-            print(f'File {file_name} đã được xử lý hoặc không phù hợp. Skip...')
-    kwargs['ti'].xcom_push(key='unprocessed_files', value=unprocessed_files)
+#Load list processed file
+def load_list(): 
+    if os.path.exists(processed_file_list):
+        with open(processed_file_list, 'r') as f: 
+            return set(line.strip() for line in f)
+    return set()
 
-    today_files = [f for f in files if re.match(file_pattern, f) and re.match(file_pattern, f).group(1) == day]
-    kwargs['ti'].xcom_push(key='file_list', value=today_files)
-    print(f"File in folder '{day}': {today_files}")
-path="dags/sqllab_orderuserbystep_20240923T021501.csv"
+def test_process(**kwargs):
+    file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='check')
+    if file:
+        print(f'Process: {file}')
+        update_list_file(file)
+    else:
+        print('Ko có file')
+
+#Update list processed file
+def update_list_file(file):
+    with open(processed_file_list, 'a') as f: 
+        f.write(f'{file}\n')
+
+#Check folder
+def check(**kwargs):
+    processed_file = load_list()
+    for filename in os.listdir(folder):
+        if filename.endswith('.json.gz'):
+            filepath = os.path.join(folder, filename)
+            if filepath not in processed_file:
+                print(f'File mới cần xử lý: {filepath}')
+                kwargs['ti'].xcom_push(key='file_to_process', value=filepath)
+                return
+    print('Không có file cần xử lý')
+    kwargs['ti'].xcom_push(key='file_to_process', value=None)
+
 gzip_path = "dags/og_item_impression.20240830_2030_3.json.gz"
 folder = "dags/ETLProject/og_item_impression.20240830_"
-
-processed_list_path = "dag/processed_list.txt"
-file_path = Path(path).resolve()
+processed_file_list = os.path.join(folder, 'list_processed_file.txt')
 default_args ={
     'owner': 'admin',
     'retries': 5,
@@ -216,6 +218,12 @@ dag =  DAG(
     default_args=default_args,
     start_date=datetime(2024,10,10),
     schedule='@daily'
+)
+Check_folder = PythonOperator(
+    task_id='Check_Folder',
+    python_callable=check,
+    provide_context=True,
+    dag=dag
 )
 Extract_File_Step = PythonOperator(
     task_id='Extract_Gzip_To_Json',
@@ -242,35 +250,4 @@ Load_Data_Step = PythonOperator(
     provide_context=True,
     dag=dag
 )
-check_file = PythonOperator(
-    task_id='check_folder',
-    python_callable=check_folder_new,
-    op_kwargs={
-        'folder_path': folder,
-    },
-    provide_context=True,
-    dag=dag
-)
-def test_process2(file_path):
-    print(f'Process {file_path}...')
-    pass
-def test_process(**kwargs):
-    unprocessed_files = kwargs['ti'].xcom_pull(task_ids='check_folder', key='file_list')
-    if not unprocessed_files: 
-        print('No files to process')
-        return
-    for file_path in unprocessed_files:
-        print(f'Processing file: {file_path}')
-        test_process2(file_path)
-        file_name = os.path.basename(file_path)
-        PROCESSED_FILES.append(file_name)
-        print(f'Add {file_name} to processed files')
-    kwargs['ti'].xcom_push(key='list_processed_file', value=PROCESSED_FILES)
-test1 = PythonOperator(
-    task_id='test1',
-    python_callable=test_process,
-    provide_context=True,
-    dag=dag
-)
 # unzip_gzipfile >> process_data >> load_data
-check_file >> test1
