@@ -9,7 +9,6 @@ from airflow import DAG
 from airflow.providers.postgres.operators.postgres import PostgresOperator # type: ignore
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
-from pathlib import Path
 from airflow.providers.postgres.hooks.postgres import PostgresHook # type: ignore
 import os
 
@@ -32,7 +31,6 @@ def process_gzip(**kwargs):
         file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
         if file:
             print(f'Process: {file}')
-            update_list_file(file)
         else:
             print('Ko có file')        
         with gzip.open(file, 'rb') as f:
@@ -137,10 +135,12 @@ def process_df_final(df):
     else:
         return None
 
+# def update_database():
+    
 #Load data in to database 
-def insert_data(ti):
+def insert_data(**kwargs):
     table = 'test1'
-    dict_df = ti.xcom_pull(task_ids='Transfrom_Data_To_DataFrame', key='df_processed')
+    dict_df = kwargs['ti'].xcom_pull(task_ids='Transfrom_Data_To_DataFrame', key='df_processed')
     records = pl.DataFrame(dict_df)
 
     if records.is_empty() == True:
@@ -154,7 +154,12 @@ def insert_data(ti):
     print("Table: ", table)
 
     value_placeholders = ", ".join(["%s"] * len(columns))
-    insert_query = f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({value_placeholders}) "
+    insert_query = f"""
+    INSERT INTO {table} ({', '.join(columns)}) 
+    VALUES ({value_placeholders}) 
+    ON CONFLICT (date, track_id, page_id, search_term, block_id, region, platform) 
+    DO UPDATE SET max_position = GREATEST({table}.max_position, EXCLUDED.max_position),
+                  count_event = {table}.count_event + EXCLUDED.count_event"""
     try:
         values = []
         for row in records.iter_rows():
@@ -176,6 +181,8 @@ def insert_data(ti):
                 cursor.executemany(insert_query, values)
                 conn.commit()
         print("Đã insert dữ liệu thành công")
+        file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
+        update_list_file(file)
     except Exception as e:
         print("Insert thất bại")
         print(e)
@@ -262,4 +269,4 @@ Load_Data_Step = PythonOperator(
     dag=dag
 )
 # unzip_gzipfile >> process_data >> load_data
-Check_folder >> Extract_File_Step
+Check_folder >> Extract_File_Step >> Transfrom_Data_Step >> Load_Data_Step
