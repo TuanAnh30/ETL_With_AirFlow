@@ -24,11 +24,18 @@ def check(**kwargs):
                 return
     print('Không có file cần xử lý')
     kwargs['ti'].xcom_push(key='file_to_process', value=None)
+#Load list processed file
+def load_list(): 
+    if os.path.exists(processed_file_list):
+        with open(processed_file_list, 'r') as f: 
+            return set(line.strip() for line in f)
+    return set()
 
 # Unzip Def
 def process_gzip(**kwargs):
     try:
         file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
+        print(file)
         if file:
             print(f'Process: {file}')
         else:
@@ -210,13 +217,6 @@ def create_table():
     except Exception as e:
         print("Lỗi: ",e)
 
-#Load list processed file
-def load_list(): 
-    if os.path.exists(processed_file_list):
-        with open(processed_file_list, 'r') as f: 
-            return set(line.strip() for line in f)
-    return set()
-
 #Update list processed file
 def update_list_file(file):
     with open(processed_file_list, 'a') as f: 
@@ -234,9 +234,15 @@ default_args ={
 dag =  DAG(
     dag_id='dag_ETL_JsonData',
     default_args=default_args,
-    start_date=datetime(2024,10,10),
+    start_date=datetime(2024,10,14),
     schedule='@daily'
 )
+# dag_10minutes = DAG(
+#     dag_id='dag_ETL_JsonData',
+#     default_args=default_args,
+#     start_date=datetime(2024, 10, 12),
+#     schedule='*/10 * * * *'
+# )
 Check_folder = PythonOperator(
     task_id='Check_Folder',
     python_callable=check,
@@ -246,7 +252,7 @@ Check_folder = PythonOperator(
 Extract_File_Step = PythonOperator(
     task_id='Extract_Gzip_To_Json',
     python_callable=process_gzip,
-    op_kwargs={'file' : gzip_path},
+    # op_kwargs={'file' : gzip_path},
     provide_context=True,
     dag = dag
 )
