@@ -369,3 +369,45 @@
 [2024-10-15T04:39:03.512+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:39:03.512+0000] {dag.py:3096} INFO - Sync 1 DAGs
 [2024-10-15T04:39:03.538+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:39:03.538+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-15 00:00:00+00:00, run_after=2024-10-16 00:00:00+00:00
 [2024-10-15T04:39:03.575+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.221 seconds
+[2024-10-15T04:39:34.037+0000] {processor.py:161} INFO - Started process (PID=9601) to work on /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:39:34.038+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/main.py for tasks to queue
+[2024-10-15T04:39:34.040+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:39:34.039+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:39:34.162+0000] {processor.py:840} INFO - DAG(s) 'dag_ETL_JsonData' retrieved from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:39:34.192+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:39:34.192+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-10-15T04:39:34.217+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:39:34.216+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-15 00:00:00+00:00, run_after=2024-10-16 00:00:00+00:00
+[2024-10-15T04:39:34.243+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.211 seconds
+[2024-10-15T04:40:04.803+0000] {processor.py:161} INFO - Started process (PID=9628) to work on /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:40:04.804+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/main.py for tasks to queue
+[2024-10-15T04:40:04.805+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:04.805+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:40:04.949+0000] {processor.py:840} INFO - DAG(s) 'dag_ETL_JsonData' retrieved from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:40:04.986+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:04.986+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-10-15T04:40:05.015+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:05.014+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-15 00:00:00+00:00, run_after=2024-10-16 00:00:00+00:00
+[2024-10-15T04:40:05.041+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.244 seconds
+[2024-10-15T04:40:12.981+0000] {processor.py:161} INFO - Started process (PID=9634) to work on /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:40:12.982+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/main.py for tasks to queue
+[2024-10-15T04:40:12.983+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:12.983+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:40:13.145+0000] {processor.py:840} INFO - DAG(s) 'dag_ETL_JsonData' retrieved from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:40:13.316+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:13.316+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-10-15T04:40:13.341+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:13.341+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-15 00:00:00+00:00, run_after=2024-10-16 00:00:00+00:00
+[2024-10-15T04:40:13.380+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.405 seconds
+[2024-10-15T04:40:43.653+0000] {processor.py:161} INFO - Started process (PID=9661) to work on /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:40:43.654+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/main.py for tasks to queue
+[2024-10-15T04:40:43.656+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:43.655+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:40:43.781+0000] {processor.py:840} INFO - DAG(s) 'dag_ETL_JsonData' retrieved from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:40:43.809+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:43.809+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-10-15T04:40:43.833+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:43.832+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-15 00:00:00+00:00, run_after=2024-10-16 00:00:00+00:00
+[2024-10-15T04:40:43.871+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.224 seconds
+[2024-10-15T04:41:14.172+0000] {processor.py:161} INFO - Started process (PID=9688) to work on /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:41:14.173+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/main.py for tasks to queue
+[2024-10-15T04:41:14.177+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:41:14.175+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:41:14.376+0000] {processor.py:840} INFO - DAG(s) 'dag_ETL_JsonData' retrieved from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:41:14.426+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:41:14.426+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-10-15T04:41:14.454+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:41:14.454+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-15 00:00:00+00:00, run_after=2024-10-16 00:00:00+00:00
+[2024-10-15T04:41:14.483+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.320 seconds
+[2024-10-15T04:41:44.655+0000] {processor.py:161} INFO - Started process (PID=9715) to work on /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:41:44.656+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/main.py for tasks to queue
+[2024-10-15T04:41:44.657+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:41:44.657+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:41:44.777+0000] {processor.py:840} INFO - DAG(s) 'dag_ETL_JsonData' retrieved from /opt/airflow/dags/ETLProject/main.py
+[2024-10-15T04:41:44.804+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:41:44.804+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-10-15T04:41:44.827+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:41:44.827+0000] {dag.py:3954} INFO - Setting next_dagrun for dag_ETL_JsonData to 2024-10-15 00:00:00+00:00, run_after=2024-10-16 00:00:00+00:00
+[2024-10-15T04:41:44.855+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/main.py took 0.206 seconds

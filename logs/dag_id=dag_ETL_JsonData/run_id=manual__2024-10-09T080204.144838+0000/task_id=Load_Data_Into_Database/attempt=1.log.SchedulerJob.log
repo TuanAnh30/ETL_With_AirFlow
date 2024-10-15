@@ -1,1 +1,0 @@
-[2024-10-09T08:02:05.770+0000] {task_context_logger.py:104} ERROR - Executor reports task instance <TaskInstance: dag_ETL_JsonData.Load_Data_Into_Database manual__2024-10-09T08:02:04.144838+00:00 [queued]> finished (success) although the task says it's queued. (Info: None) Was the task killed externally?

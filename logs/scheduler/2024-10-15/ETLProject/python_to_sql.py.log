@@ -43,3 +43,28 @@
 [2024-10-15T04:39:01.240+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:39:01.239+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/python_to_sql.py
 [2024-10-15T04:39:01.259+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ETLProject/python_to_sql.py
 [2024-10-15T04:39:01.275+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/python_to_sql.py took 0.043 seconds
+[2024-10-15T04:39:31.918+0000] {processor.py:161} INFO - Started process (PID=9591) to work on /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:39:31.919+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/python_to_sql.py for tasks to queue
+[2024-10-15T04:39:31.920+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:39:31.920+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:39:31.939+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:39:31.954+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/python_to_sql.py took 0.043 seconds
+[2024-10-15T04:40:02.678+0000] {processor.py:161} INFO - Started process (PID=9618) to work on /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:40:02.679+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/python_to_sql.py for tasks to queue
+[2024-10-15T04:40:02.681+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:02.680+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:40:02.700+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:40:02.717+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/python_to_sql.py took 0.045 seconds
+[2024-10-15T04:40:33.432+0000] {processor.py:161} INFO - Started process (PID=9651) to work on /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:40:33.433+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/python_to_sql.py for tasks to queue
+[2024-10-15T04:40:33.435+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:40:33.434+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:40:33.454+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:40:33.471+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/python_to_sql.py took 0.045 seconds
+[2024-10-15T04:41:03.946+0000] {processor.py:161} INFO - Started process (PID=9678) to work on /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:41:03.947+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/python_to_sql.py for tasks to queue
+[2024-10-15T04:41:03.949+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:41:03.948+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:41:03.966+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:41:03.982+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/python_to_sql.py took 0.043 seconds
+[2024-10-15T04:41:34.444+0000] {processor.py:161} INFO - Started process (PID=9705) to work on /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:41:34.445+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/ETLProject/python_to_sql.py for tasks to queue
+[2024-10-15T04:41:34.446+0000] {logging_mixin.py:188} INFO - [2024-10-15T04:41:34.446+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:41:34.465+0000] {processor.py:842} WARNING - No viable dags retrieved from /opt/airflow/dags/ETLProject/python_to_sql.py
+[2024-10-15T04:41:34.482+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/ETLProject/python_to_sql.py took 0.044 seconds
