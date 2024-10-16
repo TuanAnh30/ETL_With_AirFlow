@@ -7,50 +7,74 @@ sys.path.append('/opt/airflow/dags/ETLProject')
 import process_vietnamese
 from airflow.providers.postgres.hooks.postgres import PostgresHook # type: ignore
 import os
+import pendulum
 
 #Check folder
 def check(**kwargs):
-    execution_date = kwargs['ds']  # Biến ds sẽ có định dạng YYYY-MM-DD
-    today = execution_date.replace('-', '')  # Chuyển thành định dạng YYYYMMDD
+    # Lấy thời gian hiện tại mà Airflow chạy
+    current_time = kwargs['ts_nodash']  # 'YYYYMMDDTHHMMSS'
+    dt = pendulum.parse(current_time, tz='UTC').in_tz('Asia/Ho_Chi_Minh')
+    formatted_time = dt.format('YYYYMMDD_HHmm')
+    # có định dạng YYYYMMDDTHHMMSS
+    # formatted_time = f"{current_time[:8]}_{current_time[9:13]}"
+    file_list = []
+    # Duyệt qua các file trong folder
     for filename in os.listdir(folder):
-        if filename.endswith('.json.gz') and today in filename:  # Chỉ kiểm tra các file chứa ngày hôm nay
+        # Kiểm tra file có định dạng đúng và thuộc ngày hiện tại
+        if filename.endswith('.json.gz') and (formatted_time) in filename:
             filepath = os.path.join(folder, filename)
             print(f'File mới cần xử lý: {filepath}')
-            kwargs['ti'].xcom_push(key='file_to_process', value=filepath)
-            return  # Sau khi tìm thấy file cần xử lý, kết thúc hàm
-    print('Không có file cần xử lý cho ngày hôm nay')
-    kwargs['ti'].xcom_push(key='file_to_process', value=None)
-#Load list processed file
-def load_list(): 
-    today = datetime.today()
-    if os.path.exists(processed_file_list):
-        with open(processed_file_list, 'r') as f: 
-            return set(line.strip() for line in f)
-    return set()
-#Update list processed file
-def update_list_file(file):
-    with open(processed_file_list, 'a') as f: 
-        f.write(f'{file}\n')
+            file_list.append(filepath)
+    if not file_list: 
+        print(f'Không có file cần thực hiện lúc {formatted_time}')
+    kwargs['ti'].xcom_push(key='file_to_process', value=file_list)
+    print('Hoàn thành kiểm tra file.')
 
 # Unzip Def
 def process_gzip(**kwargs):
+    # Lấy danh sách file từ XCom
+    files = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')  
+    if not files:
+        print('Không có file để xử lý')
+        return
+    all_json_items = []
+    # Lặp qua từng file trong danh sách
+    for file in files:  
+        try:
+            print(f'Processing file: {file}')
+            with gzip.open(file, 'rb') as f:
+                # Đọc các item JSON từ file
+                json_items = list(ijson.items(f, '', multiple_values=True))  
+                # Gộp dữ liệu vào danh sách tổng hợp
+                all_json_items.extend(json_items)  
+                print(f'Đã giải nén file: {file}')
+        except Exception as e:
+            print(f'Lỗi khi giải nén file {file}: {e}')
+    # Đẩy dữ liệu tổng hợp từ tất cả các file lên XCom
+    kwargs['ti'].xcom_push(key='all_json_items', value=all_json_items)
+    print(f'Tổng số item JSON đã gộp: {len(all_json_items)}')
+def save_file(**kwargs): 
+    current_time = kwargs['ts_nodash']
+    today = current_time[:8]
+    list = kwargs['ti'].xcom_pull(key='list_json', task_ids='Save_File')
+    if list is None:
+        list = []  # Khởi tạo danh sách rỗng nếu không có dữ liệu
+    list_file_processing = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
     try:
-        file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
-        print(file)
-        if file:
-            print(f'Process: {file}')
-        else:
-            print('Ko có file')        
-        with gzip.open(file, 'rb') as f:
-            json_item = list(ijson.items(f, '', multiple_values=True))
-        kwargs['ti'].xcom_push(key='json_item',value=json_item)
+        for file in list_file_processing:   
+            if today in file:
+                print(file)
+                jsondata = kwargs['ti'].xcom_pull(key='all_json_items', task_ids='Extract_Gzip_To_Json')
+                if file:
+                    list.append(jsondata)
     except Exception as e:
-        print(f'Lỗi khi giải nén file:{e}')
+        print(f'Lỗi {e}')
+    kwargs['ti'].xcom_push(key='list_json', value=list)
 
 # Process File Json    
 def transfrom_data(**kwargs):
     try:
-        json_item = kwargs['ti'].xcom_pull(task_ids='Extract_Gzip_To_Json', key='json_item')
+        json_item = kwargs['ti'].xcom_pull(task_ids='Extract_Gzip_To_Json', key='all_json_items')
         if not json_item: 
             print("Không tìm thấy dữ liệu")
             return
@@ -64,7 +88,7 @@ def transfrom_data(**kwargs):
                         dt_with_tz = datetime.strptime(fluentd_time, '%Y-%m-%d %H:%M:%S %z')
                         dt_with_tz = dt_with_tz.replace(hour=0, minute=0, second=0)
                         # Chuyển đổi sang định dạng ISO 8601
-                        parsed_time = dt_with_tz.isoformat()  # Lấy ngày
+                        parsed_time = dt_with_tz.isoformat()
                     except Exception as e:
                         print(e)
                         parsed_time = ''
@@ -90,13 +114,33 @@ def transfrom_data(**kwargs):
             else:
                 print('không chứa item cần lấy')
         df = process_df(convert_to_df(data))
+        df = df.group_by(['date', 'track_id', 'page_id', 'search_term', 'block_id', 'region', 'platform']).agg([
+            pl.col('max_position').max(),
+            pl.sum('count_event'),
+        ])
         print(df)
         df = df.to_dicts()
         kwargs['ti'].xcom_push(key='df_processed', value=df)
     except Exception as e:
         print(f"Lỗi: {e}")
         return []
+#Convert File To DataFrame
+def convert_to_df(data_json):
+    try:
+        df = pl.DataFrame(data_json)
+        return df
+    except Exception as e:
+        print(f"Lỗi khi tạo DataFrame: {e}")
+        return None
+#Process DataFrame
+def process_df(df):
+    result_df = df.group_by(['date', 'track_id', 'page_id', 'search_term', 'block_id', 'region', 'platform']).agg([
+        pl.col('position').max().alias('max_position'),
+        pl.len().alias('count_event')
+    ])
+    return result_df
 
+#Process multi file to save record
 def process_multifile(**kwargs):
     df = kwargs['ti'].xcom_pull(task_ids='Transfrom_Data_To_DataFrame', key='df_processed')
     list_df=[]
@@ -111,22 +155,6 @@ def process_multifile(**kwargs):
         kwargs['ti'].xcom_push(key='df_processed', value=final_df)
     else:
         kwargs['ti'].xcom_push(key='df_processed', value=None)
-#Convert File To DataFrame
-def convert_to_df(data_json):
-    try:
-        df = pl.DataFrame(data_json)
-        return df
-    except Exception as e:
-        print(f"Lỗi khi tạo DataFrame: {e}")
-        return None
-
-#Process DataFrame
-def process_df(df):
-    result_df = df.group_by(['date', 'track_id', 'page_id', 'search_term', 'block_id', 'region', 'platform']).agg([
-        pl.col('position').max().alias('max_position'),
-        pl.len().alias('count_event')
-    ])
-    return result_df
 
 #Process Final DataFrame
 def process_df_final(df):
@@ -142,8 +170,6 @@ def process_df_final(df):
         return final_df
     else:
         return None
-
-# def update_database():
     
 #Load data in to database 
 def insert_data(**kwargs):
@@ -189,8 +215,8 @@ def insert_data(**kwargs):
                 cursor.executemany(insert_query, values)
                 conn.commit()
         print("Đã insert dữ liệu thành công")
-        file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
-        update_list_file(file)
+        # file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
+        # update_list_file(file)
     except Exception as e:
         print("Insert thất bại")
         print(e)
@@ -217,5 +243,5 @@ def create_table():
         return create_table_query
     except Exception as e:
         print("Lỗi: ",e)
+
 folder = "dags/ETLProject/og_item_impression.20240830_"
-processed_file_list = os.path.join(folder, 'list_processed_file.txt')

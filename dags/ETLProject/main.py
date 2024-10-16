@@ -4,27 +4,23 @@ sys.path.append('/opt/airflow/dags/ETLProject')
 from airflow import DAG 
 from airflow.providers.postgres.operators.postgres import PostgresOperator # type: ignore
 from airflow.operators.python import PythonOperator
-from airflow.operators.bash import BashOperator
-from main_def import check, process_gzip, transfrom_data, create_table, insert_data
+from main_def import check, process_gzip, transfrom_data, create_table, insert_data, save_file
+import pendulum
+
+local_timezone = pendulum.timezone("Asia/Ho_Chi_Minh")
 
 default_args ={
     'owner': 'admin',
     'retries': 5,
     'retry_delay': timedelta(minutes=5)
 }
-
 dag =  DAG(
     dag_id='dag_ETL_JsonData',
     default_args=default_args,
-    start_date=datetime(2024,10,10),
-    schedule='@daily'
+    start_date=datetime(2024, 10, 15, tzinfo=local_timezone),
+    end_date=datetime(2024, 10, 17, tzinfo=local_timezone),
+    schedule='10 05 * * *',
 )
-# dag_10minutes = DAG(
-#     dag_id='dag_ETL_JsonData',
-#     default_args=default_args,
-#     start_date=datetime(2024, 10, 12),
-#     schedule='*/10 * * * *'
-# )
 Check_folder = PythonOperator(
     task_id='Check_Folder',
     python_callable=check,
@@ -34,7 +30,6 @@ Check_folder = PythonOperator(
 Extract_File_Step = PythonOperator(
     task_id='Extract_Gzip_To_Json',
     python_callable=process_gzip,
-    # op_kwargs={'file' : gzip_path},
     provide_context=True,
     dag = dag
 )
@@ -56,6 +51,12 @@ Load_Data_Step = PythonOperator(
     provide_context=True,
     dag=dag
 )
-# unzip_gzipfile >> process_data >> load_data
-Check_folder 
-# >> Extract_File_Step >> Transfrom_Data_Step >> Load_Data_Step
+Save_file = PythonOperator(
+    task_id='Save_File',
+    python_callable=save_file,
+    provide_context=True,
+    dag=dag
+)
+Check_folder >> Extract_File_Step >> [Transfrom_Data_Step, Save_file]
+
+# >> Load_Data_Step 
