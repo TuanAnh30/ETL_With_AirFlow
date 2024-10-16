@@ -12,12 +12,11 @@ default_args ={
     'retries': 5,
     'retry_delay': timedelta(minutes=5)
 }
-
 dag =  DAG(
     dag_id='dag_ETL_JsonData',
     default_args=default_args,
-    start_date=datetime(2024,10,10),
-    schedule='@daily'
+    start_date=datetime(2024,10,15),
+    schedule='*/10 * * * *'
 )
 # dag_10minutes = DAG(
 #     dag_id='dag_ETL_JsonData',
@@ -34,7 +33,6 @@ Check_folder = PythonOperator(
 Extract_File_Step = PythonOperator(
     task_id='Extract_Gzip_To_Json',
     python_callable=process_gzip,
-    # op_kwargs={'file' : gzip_path},
     provide_context=True,
     dag = dag
 )
@@ -57,5 +55,5 @@ Load_Data_Step = PythonOperator(
     dag=dag
 )
 # unzip_gzipfile >> process_data >> load_data
-Check_folder 
-# >> Extract_File_Step >> Transfrom_Data_Step >> Load_Data_Step
+Check_folder >> Extract_File_Step 
+# >> Transfrom_Data_Step >> Load_Data_Step

@@ -10,23 +10,22 @@ import os
 
 #Check folder
 def check(**kwargs):
-    execution_date = kwargs['ds']  # Biến ds sẽ có định dạng YYYY-MM-DD
-    today = execution_date.replace('-', '')  # Chuyển thành định dạng YYYYMMDD
+    # Lấy thời gian hiện tại mà Airflow chạy
+    current_time = kwargs['ts_nodash']  # 20241016T022236
+    formatted_time = f"{current_time[:8]}_{current_time[9:13]}"  # có định dạng YYYYMMDDTHHMMSS
+    print(formatted_time)
+    file_list = []
+    # Duyệt qua các file trong folder
     for filename in os.listdir(folder):
-        if filename.endswith('.json.gz') and today in filename:  # Chỉ kiểm tra các file chứa ngày hôm nay
+        # Kiểm tra file có định dạng đúng và thuộc ngày hiện tại
+        if filename.endswith('.json.gz') and (formatted_time) in filename:
             filepath = os.path.join(folder, filename)
             print(f'File mới cần xử lý: {filepath}')
-            kwargs['ti'].xcom_push(key='file_to_process', value=filepath)
-            return  # Sau khi tìm thấy file cần xử lý, kết thúc hàm
-    print('Không có file cần xử lý cho ngày hôm nay')
-    kwargs['ti'].xcom_push(key='file_to_process', value=None)
-#Load list processed file
-def load_list(): 
-    today = datetime.today()
-    if os.path.exists(processed_file_list):
-        with open(processed_file_list, 'r') as f: 
-            return set(line.strip() for line in f)
-    return set()
+            file_list.append(filepath)
+    if not file_list: 
+        print(f'Không có file cần thực hiện lúc {formatted_time}')
+    kwargs['ti'].xcom_push(key='file_to_process', value=file_list)
+    print('Hoàn thành kiểm tra file.')
 #Update list processed file
 def update_list_file(file):
     with open(processed_file_list, 'a') as f: 
@@ -34,18 +33,25 @@ def update_list_file(file):
 
 # Unzip Def
 def process_gzip(**kwargs):
-    try:
-        file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
-        print(file)
-        if file:
-            print(f'Process: {file}')
-        else:
-            print('Ko có file')        
-        with gzip.open(file, 'rb') as f:
-            json_item = list(ijson.items(f, '', multiple_values=True))
-        kwargs['ti'].xcom_push(key='json_item',value=json_item)
-    except Exception as e:
-        print(f'Lỗi khi giải nén file:{e}')
+    # Lấy danh sách file từ XCom
+    files = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')  
+    if not files:  # Kiểm tra nếu không có file
+        print('Không có file để xử lý')
+        return
+    all_json_items = []  # Tạo danh sách để chứa tất cả các mục JSON từ các file
+    for file in files:  # Lặp qua từng file trong danh sách
+        try:
+            print(f'Processing file: {file}')
+            with gzip.open(file, 'rb') as f:
+                json_items = list(ijson.items(f, '', multiple_values=True))  # Đọc các item JSON từ file
+                all_json_items.extend(json_items)  # Gộp dữ liệu vào danh sách tổng hợp
+                print(f'Đã giải nén file: {file}')
+        except Exception as e:
+            print(f'Lỗi khi giải nén file {file}: {e}')
+    
+    # Đẩy dữ liệu tổng hợp từ tất cả các file lên XCom
+    kwargs['ti'].xcom_push(key='all_json_items', value=all_json_items)
+    print(f'Tổng số item JSON đã gộp: {len(all_json_items)}')
 
 # Process File Json    
 def transfrom_data(**kwargs):
@@ -90,6 +96,10 @@ def transfrom_data(**kwargs):
             else:
                 print('không chứa item cần lấy')
         df = process_df(convert_to_df(data))
+        df = df.group_by(['date', 'track_id', 'page_id', 'search_term', 'block_id', 'region', 'platform']).agg([
+            pl.col('max_position').max(),
+            pl.sum('count_event'),
+        ])
         print(df)
         df = df.to_dicts()
         kwargs['ti'].xcom_push(key='df_processed', value=df)
@@ -189,8 +199,8 @@ def insert_data(**kwargs):
                 cursor.executemany(insert_query, values)
                 conn.commit()
         print("Đã insert dữ liệu thành công")
-        file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
-        update_list_file(file)
+        # file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
+        # update_list_file(file)
     except Exception as e:
         print("Insert thất bại")
         print(e)
