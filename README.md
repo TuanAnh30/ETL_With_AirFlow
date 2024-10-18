@@ -24,6 +24,11 @@ In this ETL pipeline, we automate the ingestion of JSON-formatted log files into
    - Extracts JSON files from a designated directory.
    - Uses Airflow sensors to detect new files.
 
+1.1 **Save Backup**
+   - Saves a backup of the raw data file in Parquet format.
+   - This allows for efficient storage and quick access to the original data for future purposes, without the need to re-process the entire file.
+   - Parquet format is chosen for its smaller file size and optimized performance when handling large datasets.
+
 2. **Data Transformation**
    - Processes the JSON data using Python.
    - Cleans and transforms the data.
