@@ -15,8 +15,6 @@ def check(**kwargs):
     current_time = kwargs['ts_nodash']  # 'YYYYMMDDTHHMMSS'
     dt = pendulum.parse(current_time, tz='UTC').in_tz('Asia/Ho_Chi_Minh')
     formatted_time = dt.format('YYYYMMDD_HHmm')
-    # có định dạng YYYYMMDDTHHMMSS
-    # formatted_time = f"{current_time[:8]}_{current_time[9:13]}"
     file_list = []
     # Duyệt qua các file trong folder
     for filename in os.listdir(folder):
@@ -40,16 +38,13 @@ def process_gzip(**kwargs):
     all_json_items = []
     # Lặp qua từng file trong danh sách
     for file in files:  
-        try:
-            print(f'Processing file: {file}')
-            with gzip.open(file, 'rb') as f:
-                # Đọc các item JSON từ file
-                json_items = list(ijson.items(f, '', multiple_values=True))  
-                # Gộp dữ liệu vào danh sách tổng hợp
-                all_json_items.extend(json_items)  
-                print(f'Đã giải nén file: {file}')
-        except Exception as e:
-            print(f'Lỗi khi giải nén file {file}: {e}')
+        print(f'Processing file: {file}')
+        with gzip.open(file, 'rb') as f:
+            # Đọc các item JSON từ file
+            json_items = list(ijson.items(f, '', multiple_values=True))  
+            # Gộp dữ liệu vào danh sách tổng hợp
+            all_json_items.extend(json_items)  
+            print(f'Đã giải nén file: {file}')
     # Đẩy dữ liệu tổng hợp từ tất cả các file lên XCom
     kwargs['ti'].xcom_push(key='all_json_items', value=all_json_items)
     print(f'Tổng số item JSON đã gộp: {len(all_json_items)}')
@@ -64,8 +59,11 @@ def save_file(**kwargs):
     for file in list_file:
         print(f'Processing {file} ...')
         with gzip.open(file, 'rb') as f:
+            #Mở các file thành json item
             json_items = list(ijson.items(f, '', multiple_values=True))
+            #Load vào dataframe polars
             df = pl.from_records(json_items)
+            #Xử lý dữ liệu 
             df = df.with_columns(
                 pl.col("fluentd_time").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S %z")
                 .dt.replace_time_zone("Asia/Ho_Chi_Minh")
@@ -76,16 +74,18 @@ def save_file(**kwargs):
             df = df.with_columns(
                 pl.col('region').cast(pl.Int8)
             )
+            #Giảm chiều dữ liệu
             df = df.drop(['HTTP_HOST', 'event_name', 'fluentd_time',
                             'utm_term', 'parent_dish_id'])
             df = df.fill_null('')
+            #Xác định tên file
             name_file = os.path.splitext(os.path.splitext(file)[0])[0]
             name_file = os.path.basename(name_file)
-            print('Name file: ',name_file)
-            parquet_file_name = f"{name_file}.parquet"
-            print(parquet_file_name)
+            parquet_file_name = f"{name_file}.parquet" 
+            #Xác định đường dẫn
             file_path_parquet = os.path.join(folder_parquet, f"{name_file}.parquet")
             print(file_path_parquet)
+            #Lưu dữ liệu vào file
             if not os.path.exists(file_path_parquet):
                 df.write_parquet(file_path_parquet)
                 print(f'Đã lưu vào file: {parquet_file_name}')
