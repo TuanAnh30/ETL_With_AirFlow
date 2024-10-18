@@ -11,15 +11,17 @@ local_timezone = pendulum.timezone("Asia/Ho_Chi_Minh")
 
 default_args ={
     'owner': 'admin',
-    'retries': 5,
-    'retry_delay': timedelta(minutes=5)
+    'retries': 0,
+    'retry_delay': timedelta(minutes=5),
+    'email_on_failure': True, 
+    'email': ['nntuananh3011@gmail.com']
 }
 dag =  DAG(
     dag_id='dag_ETL_JsonData',
     default_args=default_args,
-    start_date=datetime(2024, 10, 15, tzinfo=local_timezone),
-    end_date=datetime(2024, 10, 17, tzinfo=local_timezone),
-    schedule='10 05 * * *',
+    start_date=datetime(2024, 8, 30, tzinfo=local_timezone),
+    end_date=datetime(2024, 8, 31, tzinfo=local_timezone),
+    schedule='40 8 * * *',
 )
 Check_folder = PythonOperator(
     task_id='Check_Folder',
@@ -57,6 +59,7 @@ Save_file = PythonOperator(
     provide_context=True,
     dag=dag
 )
-Check_folder >> Extract_File_Step >> [Transfrom_Data_Step, Save_file]
+Check_folder >> Save_file
+Check_folder >> Extract_File_Step >> Transfrom_Data_Step
 
 # >> Load_Data_Step 
