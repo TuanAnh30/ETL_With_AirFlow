@@ -32,4 +32,10 @@ In this ETL pipeline, we automate the ingestion of JSON-formatted log files into
    - Inserts the transformed data into a target database table.
    - Handles batch inserts and ensures data integrity.
 
+## Requiment 
+- **Python**: Python 10 or newer
+- **Docker**: 4.33.1 (need if you not Linux)
+- **Airflow**: 2.9.1
+- **Libary of Python**: polars, ijson, gzip
+- **Process Vietnamese**: https://github.com/enricobarzetti/viet_text_tools
 
