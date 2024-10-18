@@ -34,8 +34,8 @@ In this ETL pipeline, we automate the ingestion of JSON-formatted log files into
 
 ## Requiment 
 - **Python**: Python 10 or newer
-- **Docker**: 4.33.1 (need if you not Linux)
+- **Docker**: 4.33.1 (if you are not using Linux)
 - **Airflow**: 2.9.1
-- **Libary of Python**: polars, ijson, gzip
-- **Process Vietnamese**: https://github.com/enricobarzetti/viet_text_tools
+- **Libary of Python**: polars, ijson, gzip, pendulum, sys, ...
+- **Vietnamese Text Processing**: Modified version of the [Viet Text Tools](https://github.com/enricobarzetti/viet_text_tools).
 
