@@ -9,7 +9,7 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook # type: ignor
 import os
 import pendulum
 
-#Check folder
+#Check folder by real time 
 def check(**kwargs):
     # Lấy thời gian hiện tại mà Airflow chạy
     current_time = kwargs['ts_nodash']  # 'YYYYMMDDTHHMMSS'
@@ -28,6 +28,26 @@ def check(**kwargs):
     kwargs['ti'].xcom_push(key='file_to_process', value=file_list)
     print('Hoàn thành kiểm tra file.')
 
+#Check folder by list file processed 
+def check_new(**kwargs):
+    files_in_folder2 = set(os.path.splitext(file)[0] for file in os.listdir(folder_parquet))
+    # Kiểm tra các file trong folder1 có tồn tại trong folder2 không
+    list_file = []
+    for file in os.listdir(folder):
+        # Lấy phần tên file bỏ cả hai phần mở rộng
+        file_name_without_ext = os.path.splitext(os.path.splitext(file)[0])[0]
+        
+        # Nếu tên file không có trong folder2, thêm vào danh sách
+        if file_name_without_ext not in files_in_folder2:
+            # Thêm đường dẫn đầy đủ vào list_file
+            full_path = os.path.join(folder, file)
+            list_file.append(full_path)
+    if list_file:
+        print(f'Các file cần xử lý: {list_file}')
+    else: 
+        print('Không có file nào cần xử lý')
+    # In ra danh sách các file không có trong folder2
+    kwargs['ti'].xcom_push(key='file_to_process', value=list_file)
 # Unzip Def
 def process_gzip(**kwargs):
     # Lấy danh sách file từ XCom
@@ -250,3 +270,4 @@ def create_table():
         print("Lỗi: ",e)
 
 folder = "dags/ETLProject/og_item_impression.20240830_"
+folder_parquet = "dags/ETLProject/parquet_file"
