@@ -4,7 +4,7 @@ sys.path.append('/opt/airflow/dags/ETLProject')
 from airflow import DAG 
 from airflow.providers.postgres.operators.postgres import PostgresOperator # type: ignore
 from airflow.operators.python import PythonOperator
-from main_def import check, process_gzip, transfrom_data, create_table, insert_data, save_file
+from main_def import check, process_gzip, transfrom_data, create_table, insert_data, save_file, check_new
 import pendulum
 
 local_timezone = pendulum.timezone("Asia/Ho_Chi_Minh")
@@ -25,7 +25,7 @@ dag =  DAG(
 )
 Check_folder = PythonOperator(
     task_id='Check_Folder',
-    python_callable=check,
+    python_callable=check_new,
     provide_context=True,
     dag=dag
 )
@@ -59,7 +59,5 @@ Save_file = PythonOperator(
     provide_context=True,
     dag=dag
 )
-Check_folder >> Save_file
-Check_folder >> Extract_File_Step >> Transfrom_Data_Step
-
+Check_folder #>> Extract_File_Step >> Transfrom_Data_Step >> Save_file
 # >> Load_Data_Step 
