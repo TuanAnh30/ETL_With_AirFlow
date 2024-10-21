@@ -9,14 +9,12 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook # type: ignor
 import os
 import pendulum
 
-#Check folder
+#Check folder by real time 
 def check(**kwargs):
     # Lấy thời gian hiện tại mà Airflow chạy
     current_time = kwargs['ts_nodash']  # 'YYYYMMDDTHHMMSS'
     dt = pendulum.parse(current_time, tz='UTC').in_tz('Asia/Ho_Chi_Minh')
     formatted_time = dt.format('YYYYMMDD_HHmm')
-    # có định dạng YYYYMMDDTHHMMSS
-    # formatted_time = f"{current_time[:8]}_{current_time[9:13]}"
     file_list = []
     # Duyệt qua các file trong folder
     for filename in os.listdir(folder):
@@ -30,6 +28,26 @@ def check(**kwargs):
     kwargs['ti'].xcom_push(key='file_to_process', value=file_list)
     print('Hoàn thành kiểm tra file.')
 
+#Check folder by list file processed 
+def check_new(**kwargs):
+    files_in_folder2 = set(os.path.splitext(file)[0] for file in os.listdir(folder_parquet))
+    # Kiểm tra các file trong folder1 có tồn tại trong folder2 không
+    list_file = []
+    for file in os.listdir(folder):
+        # Lấy phần tên file bỏ cả hai phần mở rộng
+        file_name_without_ext = os.path.splitext(os.path.splitext(file)[0])[0]
+        
+        # Nếu tên file không có trong folder2, thêm vào danh sách
+        if file_name_without_ext not in files_in_folder2:
+            # Thêm đường dẫn đầy đủ vào list_file
+            full_path = os.path.join(folder, file)
+            list_file.append(full_path)
+    if list_file:
+        print(f'Các file cần xử lý: {list_file}')
+    else: 
+        print('Không có file nào cần xử lý')
+    # In ra danh sách các file không có trong folder2
+    kwargs['ti'].xcom_push(key='file_to_process', value=list_file)
 # Unzip Def
 def process_gzip(**kwargs):
     # Lấy danh sách file từ XCom
@@ -40,16 +58,13 @@ def process_gzip(**kwargs):
     all_json_items = []
     # Lặp qua từng file trong danh sách
     for file in files:  
-        try:
-            print(f'Processing file: {file}')
-            with gzip.open(file, 'rb') as f:
-                # Đọc các item JSON từ file
-                json_items = list(ijson.items(f, '', multiple_values=True))  
-                # Gộp dữ liệu vào danh sách tổng hợp
-                all_json_items.extend(json_items)  
-                print(f'Đã giải nén file: {file}')
-        except Exception as e:
-            print(f'Lỗi khi giải nén file {file}: {e}')
+        print(f'Processing file: {file}')
+        with gzip.open(file, 'rb') as f:
+            # Đọc các item JSON từ file
+            json_items = list(ijson.items(f, '', multiple_values=True))  
+            # Gộp dữ liệu vào danh sách tổng hợp
+            all_json_items.extend(json_items)  
+            print(f'Đã giải nén file: {file}')
     # Đẩy dữ liệu tổng hợp từ tất cả các file lên XCom
     kwargs['ti'].xcom_push(key='all_json_items', value=all_json_items)
     print(f'Tổng số item JSON đã gộp: {len(all_json_items)}')
@@ -64,8 +79,11 @@ def save_file(**kwargs):
     for file in list_file:
         print(f'Processing {file} ...')
         with gzip.open(file, 'rb') as f:
+            #Mở các file thành json item
             json_items = list(ijson.items(f, '', multiple_values=True))
+            #Load vào dataframe polars
             df = pl.from_records(json_items)
+            #Xử lý dữ liệu 
             df = df.with_columns(
                 pl.col("fluentd_time").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S %z")
                 .dt.replace_time_zone("Asia/Ho_Chi_Minh")
@@ -76,16 +94,18 @@ def save_file(**kwargs):
             df = df.with_columns(
                 pl.col('region').cast(pl.Int8)
             )
+            #Giảm chiều dữ liệu
             df = df.drop(['HTTP_HOST', 'event_name', 'fluentd_time',
                             'utm_term', 'parent_dish_id'])
             df = df.fill_null('')
+            #Xác định tên file
             name_file = os.path.splitext(os.path.splitext(file)[0])[0]
             name_file = os.path.basename(name_file)
-            print('Name file: ',name_file)
-            parquet_file_name = f"{name_file}.parquet"
-            print(parquet_file_name)
+            parquet_file_name = f"{name_file}.parquet" 
+            #Xác định đường dẫn
             file_path_parquet = os.path.join(folder_parquet, f"{name_file}.parquet")
             print(file_path_parquet)
+            #Lưu dữ liệu vào file
             if not os.path.exists(file_path_parquet):
                 df.write_parquet(file_path_parquet)
                 print(f'Đã lưu vào file: {parquet_file_name}')
@@ -250,3 +270,4 @@ def create_table():
         print("Lỗi: ",e)
 
 folder = "dags/ETLProject/og_item_impression.20240830_"
+folder_parquet = "dags/ETLProject/parquet_file"
