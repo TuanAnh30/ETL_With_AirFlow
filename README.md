@@ -28,8 +28,19 @@ In this ETL pipeline, we automate the ingestion of JSON-formatted log files into
    - Processes the JSON data using Python.
    - Cleans and transforms the data.
 
-3. **Data Loading**
+3. **Save Backup**
+      - Saves a backup of the raw data file in Parquet format.
+      - This allows for efficient storage and quick access to the original data for future purposes, without the need to re-process the entire file.
+      - Parquet format is chosen for its smaller file size and optimized performance when handling large datasets.
+
+4. **Data Loading**
    - Inserts the transformed data into a target database table.
    - Handles batch inserts and ensures data integrity.
 
+## Requiment 
+- **Python**: Python 10 or newer
+- **Docker**: 4.33.1 (if you are not using Linux)
+- **Airflow**: 2.9.1
+- **Libary of Python**: polars, ijson, gzip, pendulum, sys, ...
+- **Vietnamese Text Processing**: Modified version of the [Viet Text Tools](https://github.com/enricobarzetti/viet_text_tools).
 
