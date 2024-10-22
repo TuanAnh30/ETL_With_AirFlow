@@ -11,79 +11,79 @@ import pendulum
 
 #Check folder by real time 
 def check(**kwargs):
-    # Lấy thời gian hiện tại mà Airflow chạy
+    # Take time of airflow
     current_time = kwargs['ts_nodash']  # 'YYYYMMDDTHHMMSS'
     dt = pendulum.parse(current_time, tz='UTC').in_tz('Asia/Ho_Chi_Minh')
     formatted_time = dt.format('YYYYMMDD_HHmm')
     file_list = []
-    # Duyệt qua các file trong folder
+    # Check all file in folder
     for filename in os.listdir(folder):
-        # Kiểm tra file có định dạng đúng và thuộc ngày hiện tại
+        # Check file
         if filename.endswith('.json.gz') and (formatted_time) in filename:
             filepath = os.path.join(folder, filename)
-            print(f'File mới cần xử lý: {filepath}')
+            print(f'File to process: {filepath}')
             file_list.append(filepath)
     if not file_list: 
-        print(f'Không có file cần thực hiện lúc {formatted_time}')
+        print(f'Not file need process at {formatted_time}')
     kwargs['ti'].xcom_push(key='file_to_process', value=file_list)
-    print('Hoàn thành kiểm tra file.')
+    print('Complete check file.')
 
 #Check folder by list file processed 
 def check_new(**kwargs):
-    files_in_folder2 = set(os.path.splitext(file)[0] for file in os.listdir(folder_parquet))
-    # Kiểm tra các file trong folder1 có tồn tại trong folder2 không
+    files_in_parquet = set(os.path.splitext(file)[0] for file in os.listdir(folder_parquet))
+    # Check if the files in folder1 exist in folder2
     list_file = []
     for file in os.listdir(folder):
         # Lấy phần tên file bỏ cả hai phần mở rộng
         file_name_without_ext = os.path.splitext(os.path.splitext(file)[0])[0]
         
-        # Nếu tên file không có trong folder2, thêm vào danh sách
-        if file_name_without_ext not in files_in_folder2:
-            # Thêm đường dẫn đầy đủ vào list_file
+        #Get the file name and remove both extensions
+        if file_name_without_ext not in files_in_parquet:
+            # Append full path to list_file
             full_path = os.path.join(folder, file)
             list_file.append(full_path)
     if list_file:
-        print(f'Các file cần xử lý: {list_file}')
+        print(f'List file plan to process: {list_file}')
     else: 
-        print('Không có file nào cần xử lý')
-    # In ra danh sách các file không có trong folder2
+        print('No file need process')
+    # Print list file not in parquet_folder
     kwargs['ti'].xcom_push(key='file_to_process', value=list_file)
 # Unzip Def
 def process_gzip(**kwargs):
-    # Lấy danh sách file từ XCom
+    # Pull list file from XCom
     files = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')  
     if not files:
-        print('Không có file để xử lý')
+        print('No file need process')
         return
     all_json_items = []
-    # Lặp qua từng file trong danh sách
+    # Read all file in list 
     for file in files:  
         print(f'Processing file: {file}')
         with gzip.open(file, 'rb') as f:
-            # Đọc các item JSON từ file
+            # Read items JSON from file
             json_items = list(ijson.items(f, '', multiple_values=True))  
-            # Gộp dữ liệu vào danh sách tổng hợp
+            # Merge data into a consolidated list
             all_json_items.extend(json_items)  
-            print(f'Đã giải nén file: {file}')
-    # Đẩy dữ liệu tổng hợp từ tất cả các file lên XCom
+            print(f'Complete process: {file}')
+    # Push merge data to XCom
     kwargs['ti'].xcom_push(key='all_json_items', value=all_json_items)
-    print(f'Tổng số item JSON đã gộp: {len(all_json_items)}')
+    print(f'Total number of merged JSON items: {len(all_json_items)}')
 
 def save_file(**kwargs): 
     list_file = kwargs['ti'].xcom_pull(key='file_to_process', task_ids='Check_Folder')
     folder_parquet = "dags/ETLProject/parquet_file"
     if not list_file:
-        print('Không có file để xử lý')
+        print('No file need process')
         return
-    # Lặp qua từng file trong danh sách
+    # Read all file in list
     for file in list_file:
         print(f'Processing {file} ...')
         with gzip.open(file, 'rb') as f:
-            #Mở các file thành json item
+            #Transfrom file to json item
             json_items = list(ijson.items(f, '', multiple_values=True))
-            #Load vào dataframe polars
+            #Load into dataframe polars
             df = pl.from_records(json_items)
-            #Xử lý dữ liệu 
+            #Process data
             df = df.with_columns(
                 pl.col("fluentd_time").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S %z")
                 .dt.replace_time_zone("Asia/Ho_Chi_Minh")
@@ -94,40 +94,40 @@ def save_file(**kwargs):
             df = df.with_columns(
                 pl.col('region').cast(pl.Int8)
             )
-            #Giảm chiều dữ liệu
+            #Reduce data
             df = df.drop(['HTTP_HOST', 'event_name', 'fluentd_time',
                             'utm_term', 'parent_dish_id'])
             df = df.fill_null('')
-            #Xác định tên file
+            #Determine the file name
             name_file = os.path.splitext(os.path.splitext(file)[0])[0]
             name_file = os.path.basename(name_file)
             parquet_file_name = f"{name_file}.parquet" 
-            #Xác định đường dẫn
+            #Determine the file path
             file_path_parquet = os.path.join(folder_parquet, f"{name_file}.parquet")
             print(file_path_parquet)
-            #Lưu dữ liệu vào file
+            #Save data to file parquet
             if not os.path.exists(file_path_parquet):
                 df.write_parquet(file_path_parquet)
-                print(f'Đã lưu vào file: {parquet_file_name}')
+                print(f'Save as: {parquet_file_name}')
             else:
-                print(f'Đã tồn tại file: {parquet_file_name}')
+                print(f'File already exists: {parquet_file_name}')
 
 # Process File Json    
 def transfrom_data(**kwargs):
     json_item = kwargs['ti'].xcom_pull(task_ids='Extract_Gzip_To_Json', key='all_json_items')
     if not json_item: 
-        print("Không tìm thấy dữ liệu")
+        print("No data found")
         return
     data = []
     for item in json_item:
-        # Kiểm tra xem item có chứa các trường mong đợi không
+        # Check if item contains expected fields
         if isinstance(item, dict):
             fluentd_time = item.get('fluentd_time')
             if fluentd_time:
                 try:
                     dt_with_tz = datetime.strptime(fluentd_time, '%Y-%m-%d %H:%M:%S %z')
                     dt_with_tz = dt_with_tz.replace(hour=0, minute=0, second=0)
-                    # Chuyển đổi sang định dạng ISO 8601
+                    # Transform to ISO 8601
                     parsed_time = dt_with_tz.isoformat()
                 except Exception as e:
                     print(e)
@@ -137,7 +137,7 @@ def transfrom_data(**kwargs):
             search_term = item.get('search_term', '')
             if search_term:
                 search_term = process_vietnamese.normalize_diacritics(search_term)
-            # Xây dựng record
+            # Build record
             record = {
                 'date': parsed_time,
                 'track_id': item.get('track_id', ''),
@@ -152,7 +152,7 @@ def transfrom_data(**kwargs):
             }
             data.append(record)
         else:
-            print('không chứa item cần lấy')
+            print('Not contain the item to be retrieved')
     df = pl.DataFrame(data)
     df = process_df(df)
     df = df.group_by(['date', 'track_id', 'page_id', 'search_term', 'block_id', 'region', 'platform']).agg([
@@ -170,37 +170,6 @@ def process_df(df):
         pl.len().alias('count_event')
     ])
     return result_df
-
-#Process multi file to save record
-def process_multifile(**kwargs):
-    df = kwargs['ti'].xcom_pull(task_ids='Transfrom_Data_To_DataFrame', key='df_processed')
-    list_df=[]
-    if df is not None:
-        list_df.append(df)
-    if list_df:
-        result_df = pl.concat(list_df)
-        final_df = result_df.group_by(['date', 'track_id', 'page_id', 'search_term', 'block_id', 'region', 'platform']).agg([
-            pl.col('max_position').max(),
-            pl.sum('count_event'),
-        ])
-        kwargs['ti'].xcom_push(key='df_processed', value=final_df)
-    else:
-        kwargs['ti'].xcom_push(key='df_processed', value=None)
-
-#Process Final DataFrame
-def process_df_final(df):
-    list_df=[]
-    if df is not None:
-        list_df.append(df)
-    if list_df:
-        result_df = pl.concat(list_df)
-        final_df = result_df.group_by(['date', 'track_id', 'page_id', 'search_term', 'block_id', 'region', 'platform']).agg([
-            pl.col('max_position').max(),
-            pl.sum('count_event'),
-        ])
-        return final_df
-    else:
-        return None
     
 #Load data in to database 
 def insert_data(**kwargs):
@@ -209,13 +178,13 @@ def insert_data(**kwargs):
     records = pl.DataFrame(dict_df)
 
     if records.is_empty() == True:
-        print("Không có data")
+        print("No data found")
         return
     
-    print(f"Số lượng bản ghi: {records.shape[0]}")
+    print(f"Number of record: {records.shape[0]}")
     print(records)
     columns = [col.lower() for col in records.columns]
-    print("Insert các cột: ", columns)
+    print("Insert columns: ", columns)
     print("Table: ", table)
 
     value_placeholders = ", ".join(["%s"] * len(columns))
@@ -234,7 +203,7 @@ def insert_data(**kwargs):
                 try:
                     converted_row.append(int(value) if value is not None else 0)
                 except ValueError:
-                    print(f"Giá trị không hợp lệ cho cột '{col_name}': {value}")
+                    print(f"Invalid value for column '{col_name}': {value}")
                     converted_row.append(0)
             else:
                 converted_row.append(value)
@@ -244,7 +213,7 @@ def insert_data(**kwargs):
         with conn.cursor() as cursor:
             cursor.executemany(insert_query, values)
             conn.commit()
-    print("Đã insert dữ liệu thành công")
+    print("Success!!")
 
 #Create table
 def create_table():
@@ -252,22 +221,19 @@ def create_table():
     key_table = ['date', 'track_id', 'page_id', 'block_id',
                 'search_term', 'position', 'region',
                 'platform', 'max_position', 'count_event']
-    try:
-        columns = {}
-        for column in key_table:
-            if column in ['max_position', 'count_event', 'region']:
-                columns[column] = 'INTEGER'
-            elif column in ['date']:
-                columns[column] = 'TIMESTAMP WITH TIME ZONE'
-            else:
-                columns[column] = 'VARCHAR'  # Hoặc kiểu dữ liệu mặc định khác
-        column_definitions = ", ".join(
-            f"{col_name} {col_type}" for col_name, col_type in columns.items()
-        )
-        create_table_query = f"CREATE TABLE IF NOT EXISTS {table} ({column_definitions})"
-        return create_table_query
-    except Exception as e:
-        print("Lỗi: ",e)
+    columns = {}
+    for column in key_table:
+        if column in ['max_position', 'count_event', 'region']:
+            columns[column] = 'INTEGER'
+        elif column in ['date']:
+            columns[column] = 'TIMESTAMP WITH TIME ZONE'
+        else:
+            columns[column] = 'VARCHAR'  # Hoặc kiểu dữ liệu mặc định khác
+    column_definitions = ", ".join(
+        f"{col_name} {col_type}" for col_name, col_type in columns.items()
+    )
+    create_table_query = f"CREATE TABLE IF NOT EXISTS {table} ({column_definitions})"
+    return create_table_query
 
 folder = "dags/ETLProject/og_item_impression.20240830_"
 folder_parquet = "dags/ETLProject/parquet_file"
